@@ -1,0 +1,1449 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    width: 100%;
+    min-width: 0;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(0, 169, 87, 0.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(0, 143, 76, 0.09),
+            transparent 30%
+        ),
+        #05070b;
+
+    overflow-x: hidden;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+========================================================= */
+
+.container {
+    width: min(100% - 40px, 1300px);
+
+    margin: 0 auto;
+
+    padding-bottom: 60px;
+}
+
+
+/* =========================================================
+   CABECERA
+========================================================= */
+
+.header {
+    width: 100%;
+
+    min-height: 155px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 25px;
+
+    position: relative;
+
+    padding: 20px 0;
+
+
+}
+
+
+
+/* =========================================================
+   LOGO - AJUSTE FINAL
+========================================================= */
+
+.logo {
+    position: absolute !important;
+
+    /* ⬆️⬇️ SUBIR / BAJAR */
+    top: 60px !important;
+    /* MENOS = SUBE | MÁS = BAJA */
+
+
+    /* ⬅️➡️ IZQUIERDA / DERECHA */
+    left: -30px !important;
+    /* MENOS = IZQUIERDA | MÁS = DERECHA */
+
+
+    /* 🔍 AUMENTAR / DISMINUIR TAMAÑO */
+    width: 200px !important;
+    /* MENOS = PEQUEÑO | MÁS = GRANDE */
+
+
+    max-width: none !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateY(-50%) !important;
+
+    display: block !important;
+
+    z-index: 9999 !important;
+}
+
+.logo img {
+
+    /* 🔍 TAMAÑO DEL LOGO */
+    width: 250px !important;
+    /* DEBE SER IGUAL AL DE ARRIBA */
+
+    max-width: none !important;
+    height: auto !important;
+
+    display: block !important;
+    object-fit: contain !important;
+}
+/* =========================================================
+   BOTÓN GENERAL
+========================================================= */
+
+.header-btn {
+    position: relative;
+
+    min-width: 110px;
+    min-height: 43px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 18px;
+
+    border-radius: 999px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.14);
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Brillo */
+
+.header-btn::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 55%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+                     
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left 0.6s ease;
+
+    pointer-events: none;
+}
+
+.header-btn:hover::before {
+    left: 150%;
+}
+
+.header-btn:hover {
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    border-color:
+        rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 8px 22px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
+.header-btn.whatsapp {
+    background: #008f4c;
+
+    border-color: #008f4c;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 5px 18px
+        rgba(0, 143, 76, 0.18);
+}
+
+.header-btn.whatsapp:hover {
+    background: #00a957;
+
+    border-color: #00a957;
+
+    box-shadow:
+        0 10px 28px
+        rgba(0, 169, 87, 0.30);
+}
+
+
+/* =========================================================
+   INTRODUCCIÓN
+========================================================= */
+
+.intro {
+    width: 100%;
+
+    text-align: center;
+
+    padding:
+        clamp(45px, 6vw, 75px)
+        15px
+        clamp(35px, 5vw, 55px);
+
+    animation:
+        fadeUp 0.7s ease both;
+}
+
+
+/* Título */
+
+.intro h2 {
+    position: relative;
+
+    display: inline-block;
+
+    margin-bottom: 18px;
+
+    color: #ffffff;
+
+    font-size:
+        clamp(26px, 4vw, 43px);
+
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+/* Línea verde */
+
+.intro h2::after {
+    content: "";
+
+    display: block;
+
+    width: 65px;
+    height: 3px;
+
+    margin:
+        15px auto 0;
+
+    border-radius: 50px;
+
+    background: #bfc2c1;
+
+    box-shadow:
+        0 0 12px
+        rgba(0, 169, 87, 0.50);
+}
+
+
+/* Descripción */
+
+.intro p {
+    width: min(100%, 700px);
+
+    margin: 0 auto;
+
+    color:
+        rgba(255, 255, 255, 0.62);
+
+    font-size:
+        clamp(13px, 1.2vw, 16px);
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   CATÁLOGO
+========================================================= */
+
+.catalog {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:
+        clamp(18px, 2.2vw, 28px);
+}
+
+
+/* =========================================================
+   TARJETA
+========================================================= */
+
+.card {
+    width: 100%;
+
+    min-width: 0;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.075),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 18px 45px
+        rgba(0, 0, 0, 0.25);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+
+    animation:
+        fadeUp 0.65s ease both;
+}
+
+
+/* Entrada progresiva */
+
+.card:nth-child(1) {
+    animation-delay: 0.10s;
+}
+
+.card:nth-child(2) {
+    animation-delay: 0.18s;
+}
+
+.card:nth-child(3) {
+    animation-delay: 0.26s;
+}
+
+.card:nth-child(4) {
+    animation-delay: 0.34s;
+}
+
+
+/* =========================================================
+   INDICADOR VERDE DE TARJETA
+========================================================= */
+
+.card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            hsl(150, 12%, 94%),
+            transparent
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity 0.3s ease;
+
+    pointer-events: none;
+
+    z-index: 5;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   INTERACCIÓN TARJETA
+   SIN MOVIMIENTO
+========================================================= */
+
+.card:hover {
+    border-color:
+        rgba(122, 213, 169, 0.35);
+
+    box-shadow:
+        0 25px 55px
+        rgba(0, 0, 0, 0.40),
+        0 0 25px
+        rgba(0, 143, 76, 0.08);
+}
+
+
+/* =========================================================
+   IMAGEN
+========================================================= */
+
+.card-image {
+    width: 100%;
+
+    height:
+        clamp(
+            210px,
+            20vw,
+            280px
+        );
+
+    overflow: hidden;
+
+    position: relative;
+
+    background: #11151b;
+}
+
+
+/* Degradado */
+
+.card-image::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.58),
+            transparent 60%
+        );
+
+    pointer-events: none;
+}
+
+
+/* Imagen */
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.6s ease,
+        filter 0.5s ease;
+}
+
+
+/* Zoom suave */
+
+.card:hover .card-image img {
+    transform: scale(1.04);
+
+    filter:
+        brightness(1.04);
+}
+
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.card-content {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding:
+        clamp(20px, 2vw, 28px);
+}
+
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.card-content h3 {
+    margin-bottom: 8px;
+
+    color: #ffffff;
+
+    font-size:
+        clamp(20px, 2vw, 25px);
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    letter-spacing: -0.4px;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   UBICACIÓN
+========================================================= */
+
+.card-location {
+    margin-bottom: 17px;
+
+    color: #919090;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   ETIQUETAS
+========================================================= */
+
+.tags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-bottom: 17px;
+}
+
+
+.tag {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        7px 11px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(0, 143, 76, 0.12);
+
+    border:
+        1px solid
+        rgba(17, 18, 18, 0.28);
+
+    color: #00f47a;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.tag:hover {
+    background:
+        #044412;
+
+    border-color:
+        #f1f4f3;
+}
+
+
+/* =========================================================
+   DESCRIPCIÓN
+========================================================= */
+
+.description {
+    flex: 1;
+
+    margin-bottom: 24px;
+
+    color:
+        rgba(255, 255, 255, 0.62);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.card-buttons {
+    width: 100%;
+
+    display: flex;
+
+    align-items: stretch;
+
+    gap: 10px;
+
+    margin-top: auto;
+}
+
+
+/* =========================================================
+   BOTÓN ENTRAR
+========================================================= */
+
+.enter-btn {
+    position: relative;
+
+    overflow: hidden;
+
+    flex: 1;
+
+    min-height: 45px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    background: #008f4c;
+
+    border:
+        1px solid #008f4c;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Brillo */
+
+.enter-btn::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 60%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.22),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left 0.6s ease;
+
+    pointer-events: none;
+}
+
+
+.enter-btn:hover::before {
+    left: 140%;
+}
+
+
+.enter-btn:hover {
+    background: #00a957;
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 143, 76, 0.30);
+}
+
+
+/* =========================================================
+   BOTÓN ACTUALIZAR
+========================================================= */
+
+.update-btn {
+    flex: 1;
+
+    min-height: 45px;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.update-btn:hover {
+    background:
+        rgba(255, 255, 255, 0.09);
+
+    border-color:
+        rgba(0, 169, 87, 0.45);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    width: 100%;
+
+    margin-top: 60px;
+
+    padding:
+        38px 20px
+        45px;
+
+    text-align: center;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    position: relative;
+}
+
+
+.footer::before {
+    content: "";
+
+    position: absolute;
+
+    top: -1px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 80px;
+    height: 2px;
+
+    background: #008f4c;
+
+    box-shadow:
+        0 0 15px
+        rgba(0, 143, 76, 0.55);
+}
+
+
+/* =========================================================
+   REDES SOCIALES
+========================================================= */
+
+.footer-social {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+
+.footer-social a {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 17px;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.footer-social a:hover {
+    background: #ffffff;
+
+    border-color: #008f4c;
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 143, 76, 0.30);
+}
+
+
+/* =========================================================
+   TEXTO FOOTER
+========================================================= */
+
+.footer-text {
+    color:
+        rgba(255, 255, 255, 0.42);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   SELECCIÓN
+========================================================= */
+
+::selection {
+    background: #008f4c;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #05070b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #008f4c;
+
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00a957;
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA
+========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .container {
+        width:
+            min(
+                100% - 30px,
+                760px
+            );
+    }
+
+
+    .header {
+        min-height: 145px;
+    }
+
+
+    .logo {
+        width:
+            clamp(
+                155px,
+                25vw,
+                220px
+            );
+    }
+
+
+    .header-btn {
+        min-width: 100px;
+
+        font-size: 12px;
+    }
+
+
+    .catalog {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+
+    .card-image {
+        height: 220px;
+    }
+
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .container {
+        width:
+            calc(100% - 20px);
+
+        padding-bottom: 35px;
+    }
+
+
+    /* CABECERA */
+
+    .header {
+        min-height: 190px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: flex-end;
+
+        gap: 14px;
+
+        padding:
+            15px 0
+            18px;
+    }
+
+
+    /* LOGO */
+
+    .logo {
+        position: absolute;
+
+        top: 10px;
+
+        left: 50%;
+
+        transform:
+            translateX(-50%);
+
+        width:
+            clamp(
+                155px,
+                52vw,
+                220px
+            );
+
+        justify-content: center;
+    }
+
+
+    .logo:hover img {
+        filter:
+            drop-shadow(
+                0 5px 12px
+                rgba(0, 0, 0, 0.40)
+            );
+    }
+
+
+    /* BOTONES */
+
+    .header-buttons {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 8px;
+    }
+
+
+    .header-btn {
+        width: 100%;
+
+        min-width: 0;
+
+        min-height: 42px;
+
+        padding: 0 8px;
+
+        font-size: 11px;
+    }
+
+
+    /* INTRO */
+
+    .intro {
+        padding:
+            40px 8px
+            32px;
+    }
+
+
+    .intro h2 {
+        font-size: 26px;
+
+        letter-spacing: -0.6px;
+    }
+
+
+    .intro p {
+        font-size: 13px;
+
+        line-height: 1.65;
+    }
+
+
+    /* CATÁLOGO */
+
+    .catalog {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+
+    /* TARJETA */
+
+    .card {
+        border-radius: 16px;
+    }
+
+
+    /* IMAGEN */
+
+    .card-image {
+        height:
+            clamp(
+                190px,
+                55vw,
+                250px
+            );
+    }
+
+
+    /* CONTENIDO */
+
+    .card-content {
+        padding: 20px;
+    }
+
+
+    .card-content h3 {
+        font-size: 21px;
+    }
+
+
+    .card-location {
+        font-size: 12px;
+    }
+
+
+    .description {
+        font-size: 13px;
+    }
+
+
+    /* BOTONES */
+
+    .card-buttons {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 8px;
+    }
+
+
+    .enter-btn,
+    .update-btn {
+        width: 100%;
+
+        min-height: 44px;
+
+        font-size: 12px;
+
+        padding: 0 8px;
+    }
+
+
+    /* FOOTER */
+
+    .footer {
+        margin-top: 40px;
+
+        padding:
+            30px 10px
+            35px;
+    }
+
+
+    .footer-social a {
+        width: 42px;
+        height: 42px;
+
+        font-size: 16px;
+    }
+
+
+    .footer-text {
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   CELULAR PEQUEÑO
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .container {
+        width:
+            calc(100% - 16px);
+    }
+
+
+    .header {
+        min-height: 175px;
+    }
+
+
+    .logo {
+        width: 165px;
+
+        top: 8px;
+    }
+
+
+    .header-btn {
+        min-height: 40px;
+
+        font-size: 10px;
+    }
+
+
+    .intro {
+        padding-top: 35px;
+    }
+
+
+    .intro h2 {
+        font-size: 23px;
+    }
+
+
+    .card-image {
+        height: 190px;
+    }
+
+
+    .card-content {
+        padding: 17px;
+    }
+
+
+    .card-content h3 {
+        font-size: 19px;
+    }
+
+
+    .enter-btn,
+    .update-btn {
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   PANTALLAS GRANDES
+========================================================= */
+
+@media (min-width: 1400px) {
+
+    .container {
+        width:
+            min(
+                100% - 70px,
+                1350px
+            );
+    }
+
+
+    .logo {
+        width: 290px;
+    }
+
+
+    .catalog {
+        grid-template-columns:
+            repeat(
+                4,
+                minmax(0, 1fr)
+            );
+    }
+
+
+    .card-image {
+        height: 240px;
+    }
+
+}
+
+
+/* =========================================================
+   PANTALLAS MUY GRANDES
+========================================================= */
+
+@media (min-width: 1800px) {
+
+    .container {
+        max-width: 1450px;
+    }
+
+
+    .logo {
+        width: 310px;
+    }
+
+}
+
+
+/* =========================================================
+   DISPOSITIVOS TÁCTILES
+   SIN MOVIMIENTOS EXAGERADOS
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    .logo:hover img {
+        filter:
+            drop-shadow(
+                0 5px 12px
+                rgba(0, 0, 0, 0.40)
+            );
+    }
+
+
+    .card:hover {
+        transform: none;
+    }
+
+
+    .card:hover::before {
+        opacity: 0;
+    }
+
+
+    .card:hover .card-image img {
+        transform: none;
+        filter: none;
+    }
+
+
+    .header-btn:hover,
+    .enter-btn:hover,
+    .update-btn:hover {
+        box-shadow: none;
+    }
+
+
+    .footer-social a:hover {
+        box-shadow: none;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+
+        scroll-behavior:
+            auto !important;
+    }
+
+}
