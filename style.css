@@ -25,18 +25,17 @@ body {
 
     color: #202124;
 
-    background:
-        radial-gradient(
-            circle at top left,
-            rgba(0, 143, 76, 0.035),
-            transparent 35%
-        ),
-        #ffffff;
+    /* =====================================================
+       FONDO BLANCO
+    ===================================================== */
+
+    background: #ffffff;
 
     overflow-x: hidden;
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
     text-rendering: optimizeLegibility;
 }
 
@@ -76,9 +75,10 @@ a {
 ========================================================= */
 
 :root {
+
     --green: #008f4c;
     --green-dark: #006f3b;
-    --green-light: #00a957;
+    --green-light: #00b965;
 
     --green-soft: #eaf8f0;
     --green-soft-2: #d9f4e5;
@@ -91,6 +91,7 @@ a {
     --gray-600: #666666;
     --gray-500: #777777;
     --gray-400: #999999;
+
     --gray-300: #d9d9d9;
     --gray-200: #e8e8e8;
     --gray-100: #f5f5f5;
@@ -100,33 +101,33 @@ a {
     --radius-sm: 10px;
     --radius-md: 16px;
     --radius-lg: 22px;
-    --radius-xl: 28px;
+    --radius-xl: 30px;
 
     --shadow-sm:
-        0 5px 18px rgba(0, 0, 0, 0.06);
+        0 5px 18px rgba(0, 0, 0, 0.05);
 
     --shadow-md:
-        0 12px 35px rgba(0, 0, 0, 0.08);
+        0 12px 35px rgba(0, 0, 0, 0.07);
 
     --shadow-lg:
-        0 22px 55px rgba(0, 0, 0, 0.12);
+        0 25px 65px rgba(0, 0, 0, 0.13);
 
     --shadow-green:
-        0 15px 35px rgba(0, 143, 76, 0.20);
+        0 18px 45px rgba(0, 143, 76, 0.20);
 
     --transition-fast:
-        0.2s ease;
+        .2s ease;
 
     --transition:
-        0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .4s cubic-bezier(.2, .8, .2, 1);
 
     --transition-slow:
-        0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .7s cubic-bezier(.16, 1, .3, 1);
 }
 
 
 /* =========================================================
-   CONTENEDOR PRINCIPAL
+   CONTENEDOR
 ========================================================= */
 
 .container {
@@ -144,7 +145,7 @@ a {
     position: relative;
 
     width: 100%;
-    min-height: 160px;
+    min-height: 170px;
 
     display: flex;
     align-items: center;
@@ -162,65 +163,82 @@ a {
    DECORACIÓN HEADER
 ========================================================= */
 
+.header::before {
+    content: "";
+
+    position: absolute;
+
+    width: 320px;
+    height: 320px;
+
+    top: -180px;
+    left: -170px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0, 143, 76, .08),
+            rgba(0, 143, 76, .025) 35%,
+            transparent 70%
+        );
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    animation: floatingGlow 7s ease-in-out infinite;
+}
+
 .header::after {
     content: "";
 
     position: absolute;
 
-    width: 180px;
-    height: 180px;
+    width: 240px;
+    height: 240px;
 
-    top: -90px;
-    right: -100px;
+    top: -120px;
+    right: -120px;
+
+    border-radius: 50%;
 
     background:
         radial-gradient(
             circle,
-            rgba(0, 143, 76, 0.08),
+            rgba(0, 169, 87, .10),
             transparent 68%
         );
-
-    border-radius: 50%;
 
     pointer-events: none;
 
     z-index: -1;
+
+    animation: floatingGlow 9s ease-in-out infinite reverse;
 }
 
 
 /* =========================================================
-   LOGO 100% RESPONSIVE / DINÁMICO
+   LOGO DINÁMICO
 ========================================================= */
 
 .logo {
     position: absolute;
 
-    top: 50;
-
+    top: 50%;
     left: clamp(-25px, -1vw, 0px);
 
-    /*
-       El logo cambia automáticamente
-       dependiendo del tamaño de pantalla.
-    */
     width: clamp(200px, 20vw, 380px);
 
-    /*
-       Nunca ocupará demasiado ancho.
-    */
     max-width: 32vw;
 
-    height: 50px;
+    height: auto;
 
     display: block;
 
     padding: 0;
     margin: 0;
-
-    /*
-       Mantiene las proporciones.
-    */
-    aspect-ratio: auto;
 
     transform: translateY(-50%);
 
@@ -228,7 +246,7 @@ a {
 
     animation:
         logoAppear
-        0.10s cubic-bezier(0.2, 0.8, 0.2, 1)
+        .9s cubic-bezier(.16, 1, .3, 1)
         both;
 
     transition:
@@ -239,51 +257,46 @@ a {
 
 
 /* =========================================================
-   IMAGEN DEL LOGO
+   IMAGEN LOGO
 ========================================================= */
 
 .logo img {
     width: 100%;
     height: auto;
 
-    max-width: 100%;
-
     display: block;
 
     object-fit: contain;
 
-    /*
-       Evita deformaciones.
-    */
-    object-position: center;
-
     filter:
         drop-shadow(
-            0 8px 16px rgba(0, 0, 0, 0.08)
+            0 10px 20px rgba(0, 0, 0, .07)
         );
 
     transition:
-        transform var(--transition),
-        filter var(--transition);
+        transform .5s cubic-bezier(.2, .8, .2, 1),
+        filter .5s ease;
 }
 
 
 /* =========================================================
-   INTERACCIÓN DEL LOGO
+   HOVER LOGO
 ========================================================= */
 
 .logo:hover img {
-    transform: scale(1.035);
+    transform:
+        scale(1.045)
+        rotate(-1deg);
 
     filter:
         drop-shadow(
-            0 12px 22px rgba(0, 143, 76, 0.15)
+            0 15px 28px rgba(0, 143, 76, .18)
         );
 }
 
 
 /* =========================================================
-   CONTENEDOR BOTONES HEADER
+   BOTONES HEADER
 ========================================================= */
 
 .header-buttons {
@@ -301,14 +314,14 @@ a {
 
 
 /* =========================================================
-   BOTONES SUPERIORES
+   BOTÓN HEADER
 ========================================================= */
 
 .header-btn {
     position: relative;
 
     min-width: 112px;
-    min-height: 44px;
+    min-height: 45px;
 
     display: inline-flex;
 
@@ -321,9 +334,9 @@ a {
 
     border-radius: 999px;
 
-    border: 1px solid var(--gray-300);
+    border: 1px solid #dedede;
 
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, .95);
 
     color: var(--black);
 
@@ -336,8 +349,10 @@ a {
 
     cursor: pointer;
 
+    overflow: hidden;
+
     box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.035);
+        0 4px 15px rgba(0, 0, 0, .035);
 
     transition:
         background var(--transition-fast),
@@ -357,23 +372,23 @@ a {
 
     position: absolute;
 
-    inset: 0;
+    top: 0;
+    left: -120%;
 
-    border-radius: inherit;
+    width: 70%;
+    height: 100%;
 
     background:
         linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.35),
-            transparent 50%
+            90deg,
+            transparent,
+            rgba(255,255,255,.8),
+            transparent
         );
 
-    opacity: 0;
+    transform: skewX(-20deg);
 
-    pointer-events: none;
-
-    transition:
-        opacity var(--transition-fast);
+    transition: left .7s ease;
 }
 
 
@@ -385,19 +400,19 @@ a {
     background: #ffffff;
 
     border-color:
-        rgba(0, 143, 76, 0.45);
+        rgba(0,143,76,.45);
 
     color: var(--green);
 
     box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.09);
+        0 12px 28px rgba(0,0,0,.09);
 
     transform:
-        translateY(-2px);
+        translateY(-3px);
 }
 
 .header-btn:hover::before {
-    opacity: 1;
+    left: 140%;
 }
 
 
@@ -410,26 +425,6 @@ a {
         linear-gradient(
             135deg,
             #008f4c,
-            #00a957
-        );
-
-    border-color: transparent;
-
-    color: #ffffff;
-
-    box-shadow:
-        0 7px 20px rgba(0, 143, 76, 0.22);
-}
-
-
-/* =========================================================
-   HOVER WHATSAPP
-========================================================= */
-
-.header-btn.whatsapp:hover {
-    background:
-        linear-gradient(
-            135deg,
             #00a957,
             #00b963
         );
@@ -439,15 +434,23 @@ a {
     color: #ffffff;
 
     box-shadow:
-        0 13px 30px rgba(0, 143, 76, 0.32);
+        0 9px 25px rgba(0,143,76,.22);
+}
+
+.header-btn.whatsapp:hover {
+    color: #ffffff;
+
+    box-shadow:
+        0 16px 35px rgba(0,143,76,.34);
 
     transform:
-        translateY(-3px);
+        translateY(-4px)
+        scale(1.025);
 }
 
 
 /* =========================================================
-   INTRODUCCIÓN
+   INTRO
 ========================================================= */
 
 .intro {
@@ -462,20 +465,21 @@ a {
 
     animation:
         fadeUp
-        0.8s cubic-bezier(0.2, 0.8, 0.2, 1)
+        .9s cubic-bezier(.16,1,.3,1)
         both;
 }
 
 
 /* =========================================================
-   PEQUEÑO INDICADOR
+   INDICADOR
 ========================================================= */
 
 .intro::before {
     content: "";
 
+    display: block;
 
-    width: 42px;
+    width: 45px;
     height: 5px;
 
     margin:
@@ -491,12 +495,17 @@ a {
         );
 
     box-shadow:
-        0 5px 15px rgba(0, 143, 76, 0.22);
+        0 5px 20px rgba(0,143,76,.25);
+
+    animation:
+        lineGrow
+        1s cubic-bezier(.16,1,.3,1)
+        both;
 }
 
 
 /* =========================================================
-   TÍTULO INTRO
+   TITULO
 ========================================================= */
 
 .intro h2 {
@@ -518,9 +527,15 @@ a {
     letter-spacing: -1.5px;
 }
 
+.intro h2 span {
+    color: var(--green);
+
+    position: relative;
+}
+
 
 /* =========================================================
-   LÍNEA VERDE
+   LINEA TITULO
 ========================================================= */
 
 .intro h2::after {
@@ -528,7 +543,7 @@ a {
 
     display: block;
 
-    width: 68px;
+    width: 70px;
     height: 4px;
 
     margin:
@@ -544,12 +559,19 @@ a {
         );
 
     box-shadow:
-        0 0 15px rgba(0, 169, 87, 0.28);
+        0 0 18px rgba(0,169,87,.28);
+
+    transition:
+        width .5s ease;
+}
+
+.intro h2:hover::after {
+    width: 110px;
 }
 
 
 /* =========================================================
-   TEXTO INTRO
+   TEXTO
 ========================================================= */
 
 .intro p {
@@ -600,11 +622,10 @@ a {
 
     overflow: hidden;
 
-    background:
-        rgba(255, 255, 255, 0.96);
+    background: #ffffff;
 
     border:
-        1px solid rgba(0, 0, 0, 0.08);
+        1px solid rgba(0,0,0,.075);
 
     border-radius:
         var(--radius-lg);
@@ -614,10 +635,12 @@ a {
 
     isolation: isolate;
 
+    opacity: 0;
+
     animation:
-        fadeUp
-        0.7s cubic-bezier(0.2, 0.8, 0.2, 1)
-        both;
+        cardReveal
+        .8s cubic-bezier(.16,1,.3,1)
+        forwards;
 
     transition:
         border-color var(--transition),
@@ -627,44 +650,21 @@ a {
 
 
 /* =========================================================
-   ANIMACIONES ESCALONADAS
+   ANIMACIÓN ESCALONADA
 ========================================================= */
 
-.card:nth-child(1) {
-    animation-delay: 0.08s;
-}
-
-.card:nth-child(2) {
-    animation-delay: 0.16s;
-}
-
-.card:nth-child(3) {
-    animation-delay: 0.24s;
-}
-
-.card:nth-child(4) {
-    animation-delay: 0.32s;
-}
-
-.card:nth-child(5) {
-    animation-delay: 0.40s;
-}
-
-.card:nth-child(6) {
-    animation-delay: 0.48s;
-}
-
-.card:nth-child(7) {
-    animation-delay: 0.56s;
-}
-
-.card:nth-child(8) {
-    animation-delay: 0.64s;
-}
+.card:nth-child(1) { animation-delay: .08s; }
+.card:nth-child(2) { animation-delay: .16s; }
+.card:nth-child(3) { animation-delay: .24s; }
+.card:nth-child(4) { animation-delay: .32s; }
+.card:nth-child(5) { animation-delay: .40s; }
+.card:nth-child(6) { animation-delay: .48s; }
+.card:nth-child(7) { animation-delay: .56s; }
+.card:nth-child(8) { animation-delay: .64s; }
 
 
 /* =========================================================
-   BORDE VERDE SUPERIOR
+   BORDE SUPERIOR
 ========================================================= */
 
 .card::before {
@@ -681,24 +681,28 @@ a {
     background:
         linear-gradient(
             90deg,
-            transparent 0%,
-            var(--green) 30%,
-            var(--green-light) 50%,
-            var(--green) 70%,
-            transparent 100%
+            transparent,
+            var(--green),
+            var(--green-light),
+            var(--green),
+            transparent
         );
 
     opacity: 0;
 
-    z-index: 10;
+    z-index: 20;
+
+    transform:
+        scaleX(.2);
 
     transition:
-        opacity var(--transition);
+        opacity .4s ease,
+        transform .6s cubic-bezier(.16,1,.3,1);
 }
 
 
 /* =========================================================
-   EFECTO LUZ TARJETA
+   GLOW INTERNO
 ========================================================= */
 
 .card::after {
@@ -706,18 +710,18 @@ a {
 
     position: absolute;
 
-    width: 180px;
-    height: 180px;
+    width: 250px;
+    height: 250px;
 
-    right: -90px;
-    bottom: -100px;
+    right: -130px;
+    bottom: -140px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle,
-            rgba(0, 143, 76, 0.08),
+            rgba(0,143,76,.13),
             transparent 68%
         );
 
@@ -728,33 +732,44 @@ a {
     z-index: -1;
 
     transition:
-        opacity var(--transition);
+        opacity .5s ease,
+        transform .7s ease;
 }
 
 
 /* =========================================================
-   HOVER TARJETA
+   HOVER CARD
 ========================================================= */
 
 .card:hover {
     border-color:
-        rgba(0, 143, 76, 0.32);
+        rgba(0,143,76,.30);
 
     box-shadow:
-        var(--shadow-lg);
+        0 25px 65px rgba(0,0,0,.12),
+        0 12px 35px rgba(0,143,76,.08);
 
     transform:
-        translateY(-7px);
+        translateY(-9px);
 }
 
-.card:hover::before,
+.card:hover::before {
+    opacity: 1;
+
+    transform:
+        scaleX(1);
+}
+
 .card:hover::after {
     opacity: 1;
+
+    transform:
+        scale(1.2);
 }
 
 
 /* =========================================================
-   IMAGEN TARJETA
+   IMAGEN
 ========================================================= */
 
 .card-image {
@@ -772,16 +787,12 @@ a {
     overflow: hidden;
 
     background:
-        linear-gradient(
-            135deg,
-            #eeeeee,
-            #f7f7f7
-        );
+        #f3f3f3;
 }
 
 
 /* =========================================================
-   IMAGEN
+   IMAGEN TARJETA
 ========================================================= */
 
 .card-image img {
@@ -793,8 +804,8 @@ a {
     object-fit: cover;
 
     transition:
-        transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
-        filter 0.5s ease;
+        transform .9s cubic-bezier(.16,1,.3,1),
+        filter .6s ease;
 }
 
 
@@ -812,8 +823,8 @@ a {
     background:
         linear-gradient(
             to top,
-            rgba(0, 0, 0, 0.42),
-            rgba(0, 0, 0, 0.05) 48%,
+            rgba(0,0,0,.45),
+            rgba(0,0,0,.08) 50%,
             transparent 75%
         );
 
@@ -824,21 +835,59 @@ a {
 
 
 /* =========================================================
-   ZOOM IMAGEN
+   BRILLO SOBRE IMAGEN
 ========================================================= */
 
-.card:hover .card-image img {
-    transform:
-        scale(1.065);
+.card-image::before {
+    content: "";
 
-    filter:
-        brightness(1.045)
-        saturate(1.03);
+    position: absolute;
+
+    top: 0;
+    left: -130%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.20),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    z-index: 5;
+
+    transition:
+        left .9s ease;
+
+    pointer-events: none;
 }
 
 
 /* =========================================================
-   CONTENIDO TARJETA
+   HOVER IMAGEN
+========================================================= */
+
+.card:hover .card-image img {
+    transform:
+        scale(1.09);
+
+    filter:
+        brightness(1.06)
+        saturate(1.08);
+}
+
+.card:hover .card-image::before {
+    left: 140%;
+}
+
+
+/* =========================================================
+   CONTENIDO
 ========================================================= */
 
 .card-content {
@@ -857,7 +906,7 @@ a {
 
 
 /* =========================================================
-   TÍTULO TARJETA
+   TITULO CARD
 ========================================================= */
 
 .card-content h3 {
@@ -872,9 +921,20 @@ a {
 
     font-weight: 850;
 
-    letter-spacing: -0.7px;
+    letter-spacing: -.7px;
 
     overflow-wrap: anywhere;
+
+    transition:
+        color .3s ease,
+        transform .3s ease;
+}
+
+.card:hover .card-content h3 {
+    color: var(--green);
+
+    transform:
+        translateX(3px);
 }
 
 
@@ -899,24 +959,29 @@ a {
 
     text-transform: uppercase;
 
-    letter-spacing: 0.65px;
+    letter-spacing: .65px;
 }
-
-
-/* =========================================================
-   ICONO UBICACIÓN
-========================================================= */
 
 .card-location i,
 .card-location svg {
     color: var(--green);
 
     flex-shrink: 0;
+
+    transition:
+        transform .4s ease;
+}
+
+.card:hover .card-location i,
+.card:hover .card-location svg {
+    transform:
+        scale(1.2)
+        translateY(-1px);
 }
 
 
 /* =========================================================
-   ETIQUETAS
+   TAGS
 ========================================================= */
 
 .tags {
@@ -928,11 +993,6 @@ a {
 
     margin-bottom: 18px;
 }
-
-
-/* =========================================================
-   TAG
-========================================================= */
 
 .tag {
     display: inline-flex;
@@ -968,37 +1028,29 @@ a {
     white-space: nowrap;
 
     transition:
-        background var(--transition-fast),
-        border-color var(--transition-fast),
-        color var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
+        background .25s ease,
+        border-color .25s ease,
+        color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
 }
-
-
-/* =========================================================
-   HOVER TAG
-========================================================= */
 
 .tag:hover {
     background:
-        linear-gradient(
-            135deg,
-            #d8f3e4,
-            #ebfaf2
-        );
+        var(--green);
 
     border-color:
         var(--green);
 
     color:
-        var(--green-dark);
+        #ffffff;
 
     transform:
-        translateY(-2px);
+        translateY(-3px)
+        scale(1.03);
 
     box-shadow:
-        0 5px 12px rgba(0, 143, 76, 0.10);
+        0 7px 18px rgba(0,143,76,.18);
 }
 
 
@@ -1021,7 +1073,7 @@ a {
 
 
 /* =========================================================
-   BOTONES TARJETA
+   BOTONES
 ========================================================= */
 
 .card-buttons {
@@ -1049,6 +1101,7 @@ a {
     flex: 1;
 
     min-width: 0;
+
     min-height: 46px;
 
     display: inline-flex;
@@ -1067,15 +1120,11 @@ a {
         linear-gradient(
             135deg,
             #008f4c,
-            #00a957
+            #00a957,
+            #00b963
         );
 
-    border:
-        1px solid transparent;
-
     color: #ffffff;
-
-    font-family: inherit;
 
     font-size: 14px;
 
@@ -1084,17 +1133,17 @@ a {
     cursor: pointer;
 
     box-shadow:
-        0 6px 17px rgba(0, 143, 76, 0.18);
+        0 7px 20px rgba(0,143,76,.18);
 
     transition:
-        background var(--transition-fast),
         box-shadow var(--transition),
-        transform var(--transition);
+        transform var(--transition),
+        filter .3s ease;
 }
 
 
 /* =========================================================
-   BRILLO BOTÓN
+   BRILLO
 ========================================================= */
 
 .enter-btn::before {
@@ -1103,16 +1152,16 @@ a {
     position: absolute;
 
     top: 0;
-    left: -110%;
+    left: -120%;
 
-    width: 65%;
+    width: 70%;
     height: 100%;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.28),
+            rgba(255,255,255,.35),
             transparent
         );
 
@@ -1120,15 +1169,10 @@ a {
         skewX(-20deg);
 
     transition:
-        left 0.65s ease;
+        left .7s ease;
 
     pointer-events: none;
 }
-
-
-/* =========================================================
-   HOVER BRILLO
-========================================================= */
 
 .enter-btn:hover::before {
     left: 140%;
@@ -1136,22 +1180,19 @@ a {
 
 
 /* =========================================================
-   HOVER ENTRAR
+   HOVER
 ========================================================= */
 
 .enter-btn:hover {
-    background:
-        linear-gradient(
-            135deg,
-            #00a957,
-            #00b963
-        );
-
     box-shadow:
-        0 13px 28px rgba(0, 143, 76, 0.28);
+        0 15px 35px rgba(0,143,76,.30);
 
     transform:
-        translateY(-3px);
+        translateY(-4px)
+        scale(1.015);
+
+    filter:
+        brightness(1.05);
 }
 
 
@@ -1162,9 +1203,12 @@ a {
 .update-btn {
     position: relative;
 
+    overflow: hidden;
+
     flex: 1;
 
     min-width: 0;
+
     min-height: 46px;
 
     display: inline-flex;
@@ -1186,8 +1230,6 @@ a {
 
     color: var(--gray-900);
 
-    font-family: inherit;
-
     font-size: 14px;
 
     font-weight: 650;
@@ -1195,48 +1237,28 @@ a {
     cursor: pointer;
 
     transition:
-        background var(--transition-fast),
-        border-color var(--transition-fast),
-        color var(--transition-fast),
+        background .25s ease,
+        border-color .25s ease,
+        color .25s ease,
         box-shadow var(--transition),
         transform var(--transition);
 }
-
-
-/* =========================================================
-   HOVER ACTUALIZAR
-========================================================= */
 
 .update-btn:hover {
     background:
         var(--green-soft);
 
     border-color:
-        rgba(0, 143, 76, 0.45);
+        rgba(0,143,76,.45);
 
     color:
         var(--green-dark);
 
     box-shadow:
-        0 9px 22px rgba(0, 0, 0, 0.08);
+        0 10px 25px rgba(0,143,76,.10);
 
     transform:
-        translateY(-3px);
-}
-
-
-/* =========================================================
-   FOCUS ACCESIBILIDAD
-========================================================= */
-
-.header-btn:focus-visible,
-.enter-btn:focus-visible,
-.update-btn:focus-visible,
-.footer-social a:focus-visible {
-    outline:
-        3px solid rgba(0, 143, 76, 0.25);
-
-    outline-offset: 3px;
+        translateY(-4px);
 }
 
 
@@ -1261,16 +1283,12 @@ a {
         1px solid var(--gray-200);
 
     background:
-        linear-gradient(
-            to bottom,
-            rgba(248, 248, 248, 0.55),
-            rgba(255, 255, 255, 0.95)
-        );
+        #ffffff;
 }
 
 
 /* =========================================================
-   LÍNEA FOOTER
+   LINEA FOOTER
 ========================================================= */
 
 .footer::before {
@@ -1279,6 +1297,7 @@ a {
     position: absolute;
 
     top: -2px;
+
     left: 50%;
 
     width: 95px;
@@ -1297,12 +1316,12 @@ a {
         );
 
     box-shadow:
-        0 0 16px rgba(0, 143, 76, 0.30);
+        0 0 18px rgba(0,143,76,.30);
 }
 
 
 /* =========================================================
-   REDES SOCIALES
+   REDES
 ========================================================= */
 
 .footer-social {
@@ -1318,12 +1337,9 @@ a {
     margin-bottom: 21px;
 }
 
-
-/* =========================================================
-   ICONOS REDES
-========================================================= */
-
 .footer-social a {
+    position: relative;
+
     width: 45px;
     height: 45px;
 
@@ -1335,7 +1351,7 @@ a {
     border-radius: 50%;
 
     background:
-        #f7f7f7;
+        #ffffff;
 
     border:
         1px solid var(--gray-200);
@@ -1348,7 +1364,7 @@ a {
     font-size: 17px;
 
     box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.035);
+        0 5px 15px rgba(0,0,0,.04);
 
     transition:
         background var(--transition),
@@ -1358,31 +1374,27 @@ a {
         transform var(--transition);
 }
 
-
-/* =========================================================
-   HOVER REDES
-========================================================= */
-
 .footer-social a:hover {
     background:
-        var(--green-soft);
-
-    border-color:
-        rgba(0, 143, 76, 0.35);
-
-    color:
         var(--green);
 
+    border-color:
+        var(--green);
+
+    color:
+        #ffffff;
+
     box-shadow:
-        0 12px 25px rgba(0, 143, 76, 0.16);
+        0 12px 28px rgba(0,143,76,.25);
 
     transform:
-        translateY(-4px);
+        translateY(-5px)
+        rotate(5deg);
 }
 
 
 /* =========================================================
-   TEXTO FOOTER
+   FOOTER TEXTO
 ========================================================= */
 
 .footer-text {
@@ -1409,7 +1421,7 @@ a {
 
 ::-webkit-scrollbar-track {
     background:
-        #f1f1f1;
+        #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -1423,7 +1435,7 @@ a {
     border-radius: 999px;
 
     border:
-        2px solid #f1f1f1;
+        2px solid #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -1433,7 +1445,7 @@ a {
 
 
 /* =========================================================
-   ANIMACIÓN PRINCIPAL
+   ANIMACIONES
 ========================================================= */
 
 @keyframes fadeUp {
@@ -1442,7 +1454,7 @@ a {
         opacity: 0;
 
         transform:
-            translateY(24px);
+            translateY(30px);
     }
 
     to {
@@ -1454,9 +1466,25 @@ a {
 }
 
 
-/* =========================================================
-   ANIMACIÓN LOGO DESKTOP
-========================================================= */
+@keyframes cardReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(35px)
+            scale(.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
 
 @keyframes logoAppear {
 
@@ -1464,14 +1492,51 @@ a {
         opacity: 0;
 
         transform:
-            translateY(-45%);
+            translateY(-50%)
+            scale(.92);
     }
 
     to {
         opacity: 1;
 
         transform:
-            translateY(-50%);
+            translateY(-50%)
+            scale(1);
+    }
+}
+
+
+@keyframes lineGrow {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scaleX(0);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            scaleX(1);
+    }
+}
+
+
+@keyframes floatingGlow {
+
+    0%,
+    100% {
+        transform:
+            translate(0,0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate(15px,20px)
+            scale(1.05);
     }
 }
 
@@ -1494,9 +1559,6 @@ a {
         min-height: 150px;
     }
 
-    /*
-       LOGO DINÁMICO
-    */
     .logo {
         width:
             clamp(
@@ -1530,10 +1592,7 @@ a {
 
     .catalog {
         grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
+            repeat(2,minmax(0,1fr));
     }
 
     .card-image {
@@ -1568,9 +1627,6 @@ a {
             18px 0;
     }
 
-    /*
-       LOGO TABLET
-    */
     .logo {
         width:
             clamp(
@@ -1637,11 +1693,7 @@ a {
 
     body {
         background:
-            linear-gradient(
-                180deg,
-                #ffffff 0%,
-                #fbfdfc 100%
-            );
+            #ffffff;
     }
 
     .container {
@@ -1653,9 +1705,7 @@ a {
     }
 
 
-    /* =====================================================
-       HEADER MOBILE
-    ===================================================== */
+    /* HEADER */
 
     .header {
         min-height: 195px;
@@ -1676,32 +1726,15 @@ a {
     }
 
 
-    /* =====================================================
-       DECORACIÓN HEADER MOBILE
-    ===================================================== */
-
-    .header::after {
-        width: 130px;
-        height: 130px;
-
-        top: -60px;
-        right: -65px;
-    }
-
-
-    /* =====================================================
-       LOGO MOBILE
-    ===================================================== */
+    /* LOGO */
 
     .logo {
         position: absolute;
 
         top: 10px;
+
         left: 50%;
 
-        /*
-           Tamaño dinámico para celulares.
-        */
         width:
             clamp(
                 145px,
@@ -1709,18 +1742,16 @@ a {
                 220px
             );
 
-        /*
-           Nunca ocupará demasiado espacio.
-        */
-        max-width: 75vw;
+        max-width:
+            75vw;
 
         transform:
             translateX(-50%);
 
         animation:
             logoMobileAppear
-            0.7s
-            cubic-bezier(0.2, 0.8, 0.2, 1)
+            .8s
+            cubic-bezier(.16,1,.3,1)
             both;
     }
 
@@ -1730,13 +1761,12 @@ a {
     }
 
     .logo:hover img {
-        transform: scale(1.02);
+        transform:
+            scale(1.02);
     }
 
 
-    /* =====================================================
-       BOTONES HEADER MOBILE
-    ===================================================== */
+    /* BOTONES */
 
     .header-buttons {
         width: 100%;
@@ -1744,10 +1774,7 @@ a {
         display: grid;
 
         grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
+            repeat(2,minmax(0,1fr));
 
         gap: 8px;
     }
@@ -1769,9 +1796,7 @@ a {
     }
 
 
-    /* =====================================================
-       INTRO MOBILE
-    ===================================================== */
+    /* INTRO */
 
     .intro {
         padding:
@@ -1799,11 +1824,12 @@ a {
             );
 
         letter-spacing:
-            -0.8px;
+            -.8px;
     }
 
     .intro h2::after {
         width: 55px;
+
         height: 3px;
 
         margin-top: 12px;
@@ -1818,9 +1844,7 @@ a {
     }
 
 
-    /* =====================================================
-       CATÁLOGO MOBILE
-    ===================================================== */
+    /* CATÁLOGO */
 
     .catalog {
         grid-template-columns: 1fr;
@@ -1829,27 +1853,23 @@ a {
     }
 
 
-    /* =====================================================
-       CARD MOBILE
-    ===================================================== */
+    /* CARD */
 
     .card {
         border-radius:
             18px;
 
         box-shadow:
-            0 10px 28px rgba(0, 0, 0, 0.075);
+            0 10px 28px rgba(0,0,0,.075);
     }
 
     .card:hover {
         transform:
-            translateY(-3px);
+            translateY(-4px);
     }
 
 
-    /* =====================================================
-       IMAGEN MOBILE
-    ===================================================== */
+    /* IMAGEN */
 
     .card-image {
         height:
@@ -1861,9 +1881,7 @@ a {
     }
 
 
-    /* =====================================================
-       CONTENIDO MOBILE
-    ===================================================== */
+    /* CONTENIDO */
 
     .card-content {
         padding:
@@ -1900,26 +1918,20 @@ a {
     .description {
         font-size: 13px;
 
-        line-height:
-            1.7;
+        line-height: 1.7;
 
         margin-bottom:
             21px;
     }
 
 
-    /* =====================================================
-       BOTONES MOBILE
-    ===================================================== */
+    /* BOTONES CARD */
 
     .card-buttons {
         display: grid;
 
         grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
+            repeat(2,minmax(0,1fr));
 
         gap: 8px;
     }
@@ -1940,9 +1952,7 @@ a {
     }
 
 
-    /* =====================================================
-       FOOTER MOBILE
-    ===================================================== */
+    /* FOOTER */
 
     .footer {
         margin-top:
@@ -2003,9 +2013,6 @@ a {
             16px;
     }
 
-    /*
-       LOGO MUY PEQUEÑO
-    */
     .logo {
         top: 8px;
 
@@ -2115,9 +2122,6 @@ a {
             175px;
     }
 
-    /*
-       LOGO GRANDE PERO FLUIDO
-    */
     .logo {
         width:
             clamp(
@@ -2152,7 +2156,7 @@ a {
         grid-template-columns:
             repeat(
                 4,
-                minmax(0, 1fr)
+                minmax(0,1fr)
             );
 
         gap:
@@ -2172,7 +2176,7 @@ a {
 
 
 /* =========================================================
-   PANTALLAS MUY GRANDES
+   MUY GRANDES
 ========================================================= */
 
 @media (min-width: 1800px) {
@@ -2222,10 +2226,6 @@ a {
             185px;
     }
 
-    /*
-       El logo sigue siendo responsive.
-       Ya NO queda fijado a 350px.
-    */
     .logo {
         width:
             clamp(
@@ -2246,7 +2246,7 @@ a {
 
 
 /* =========================================================
-   DISPOSITIVOS TÁCTILES
+   TOUCH
 ========================================================= */
 
 @media (hover: none) and (pointer: coarse) {
@@ -2255,7 +2255,7 @@ a {
         transform: none;
 
         border-color:
-            rgba(0, 0, 0, 0.08);
+            rgba(0,0,0,.075);
 
         box-shadow:
             var(--shadow-md);
@@ -2276,16 +2276,10 @@ a {
     .enter-btn:hover,
     .update-btn:hover {
         transform: none;
-
-        box-shadow:
-            initial;
     }
 
     .footer-social a:hover {
         transform: none;
-
-        box-shadow:
-            0 4px 12px rgba(0, 0, 0, 0.035);
     }
 
     .logo:hover img {
@@ -2293,9 +2287,26 @@ a {
 
         filter:
             drop-shadow(
-                0 8px 16px rgba(0, 0, 0, 0.08)
+                0 8px 16px rgba(0,0,0,.08)
             );
     }
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+========================================================= */
+
+.header-btn:focus-visible,
+.enter-btn:focus-visible,
+.update-btn:focus-visible,
+.footer-social a:focus-visible {
+
+    outline:
+        3px solid rgba(0,143,76,.25);
+
+    outline-offset:
+        3px;
 }
 
 
@@ -2313,14 +2324,15 @@ a {
     *,
     *::before,
     *::after {
+
         animation-duration:
-            0.01ms !important;
+            .01ms !important;
 
         animation-iteration-count:
             1 !important;
 
         transition-duration:
-            0.01ms !important;
+            .01ms !important;
     }
 }
 
@@ -2336,8 +2348,8 @@ a {
 
         transform:
             translateX(-50%)
-            translateY(-8px)
-            scale(0.96);
+            translateY(-10px)
+            scale(.94);
     }
 
     to {
