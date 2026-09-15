@@ -1,5 +1,5 @@
-```html
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -13,23 +13,13 @@
 
     <!-- =====================================================
          GOOGLE FONTS
+         MONTSERRAT = TÍTULOS
+         POPPINS = TEXTOS
     ====================================================== -->
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 
     <!-- =====================================================
@@ -56,7 +46,6 @@
 
 <body>
 
-
 <div class="container">
 
 
@@ -66,38 +55,26 @@
 
     <header class="header">
 
-
-        <!-- LOGO -->
-
         <div class="logo">
 
             <img
-                src="logo d eventas NEDGR0_Mesa de trabajo 1.png"
+                src="imag/logo d eventas NEDGR0_Mesa de trabajo 1.png"
                 alt="Logotipo Grupo OSES"
             >
 
         </div>
 
 
-        <!-- BOTONES DE CABECERA -->
-
         <div class="header-buttons">
-
-
-            <!-- RECARGAR -->
 
             <button
                 type="button"
                 class="header-btn"
                 onclick="location.reload()"
             >
-
                 Recargar
-
             </button>
 
-
-            <!-- WHATSAPP -->
 
             <a
                 href="https://wa.me/51910557371"
@@ -105,14 +82,10 @@
                 rel="noopener noreferrer"
                 class="header-btn whatsapp"
             >
-
                 WhatsApp
-
             </a>
 
-
         </div>
-
 
     </header>
 
@@ -124,21 +97,14 @@
 
     <section class="intro">
 
-
         <h2>
-
             Explora nuestras propiedades
-
         </h2>
 
-
         <p>
-
             Recorre cada espacio de forma interactiva y
             descubre todos sus detalles antes de visitarlo.
-
         </p>
-
 
     </section>
 
@@ -151,85 +117,130 @@
     <main class="catalog">
 
 
-
         <!-- =================================================
-             PROPIEDAD 01
+             PROPIEDAD 01 - ACTIVA
         ================================================== -->
 
-        <article class="card">
+        <article class="card active-card">
 
-
-            <!-- IMAGEN DE LA PROPIEDAD -->
 
             <div class="card-image">
 
                 <img
-                    src="<img src="imag/Captura de pantalla 2026-09-14 172114.png" alt="">"
+                    src="imag/Captura de pantalla 2026-09-14 172114.png"
                     alt="Casa en venta Hualhuas"
                 >
+
+                <span class="available">
+                    DISPONIBLE
+                </span>
 
             </div>
 
 
-            <!-- INFORMACIÓN -->
-
             <div class="card-content">
 
-
                 <h3>
-
-                    CASA EN VENTA "HUALHUAS"
-
+                    CASA EN VENTA HUALHUAS
                 </h3>
 
 
                 <div class="card-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
 
                     Hualhuas - Huancayo
 
                 </div>
 
 
-                <p class="description">
+                <!-- INFORMACIÓN -->
 
-                    Venta de Casa de dos pisos Hualhuas.
-                    <br>
-                    Área: 100 m²
-                    <br>
-                    Frontis: 8.60 ml
-                    <br><br>
+                <details class="property-info">
 
-                    Cuenta con dos niveles.
+                    <summary>
 
-                    <br><br>
+                        Ver información
 
-                    <strong>Primer nivel:</strong>
-                    <br>
-                    Cochera o tienda comercial.
+                        <i class="fa-solid fa-chevron-down"></i>
 
-                    <br><br>
+                    </summary>
 
-                    <strong>Segundo nivel:</strong>
-                    <br>
-                    3 dormitorios
-                    <br>
-                    Zona de lavandería
-                    <br>
-                    Sala de estar
-                    <br>
-                    Cocina-comedor
-                    <br>
-                    2 baños
-                    <br>
-                    Azotea
 
-                </p>
+                    <div class="description">
 
+                        <p>
+                            Venta de Casa de dos pisos Hualhuas.
+                        </p>
+
+
+                        <p>
+
+                            <strong>Área:</strong>
+                            100 m²
+
+                            <br>
+
+                            <strong>Frontis:</strong>
+                            8.60 ml
+
+                        </p>
+
+
+                        <p>
+                            Cuenta con dos niveles.
+                        </p>
+
+
+                        <p>
+
+                            <strong>Primer nivel:</strong>
+
+                            <br>
+
+                            Cochera o tienda comercial.
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Segundo nivel:</strong>
+
+                            <br>
+
+                            3 dormitorios
+
+                            <br>
+
+                            Zona de lavandería
+
+                            <br>
+
+                            Sala de estar
+
+                            <br>
+
+                            Cocina-comedor
+
+                            <br>
+
+                            2 baños
+
+                            <br>
+
+                            Azotea
+
+                        </p>
+
+                    </div>
+
+                </details>
+
+
+                <!-- BOTÓN 360° -->
 
                 <div class="card-buttons">
-
-
-                    <!-- LINK DIRECTO A PANOEE -->
 
                     <a
                         href="https://tour.panoee.net/6a9eeb0f23f7652da4a1cf23"
@@ -238,350 +249,279 @@
                         class="enter-btn"
                     >
 
-                        Entrar
+                        <i class="fa-solid fa-vr-cardboard"></i>
+
+                        Ver recorrido 360°
 
                     </a>
 
-
-                    <!-- ACTUALIZAR -->
-
-                    <button
-                        type="button"
-                        class="update-btn"
-                        onclick="actualizar('Propiedad 01')"
-                    >
-
-                        Actualizar
-
-                    </button>
-
-
                 </div>
 
-
             </div>
-
 
         </article>
 
 
 
         <!-- =================================================
-             PROPIEDAD 02
+             PROPIEDAD 02 - MUY PRONTO
         ================================================== -->
 
-        <article class="card">
+        <article class="card coming-soon">
 
-
-            <!-- IMAGEN -->
 
             <div class="card-image">
 
                 <img
-                    src="imagenes/panoramica.jpg"
-                    alt="Vista panorámica propiedad 2"
+                    src="imag/logo d eventas NEDGR0_Mesa de trabajo 1.png"
+                    alt="Próxima propiedad"
                 >
+
+
+                <div class="coming-overlay">
+
+                    <span>
+                        MUY PRONTO
+                    </span>
+
+                </div>
 
             </div>
 
 
-            <!-- INFORMACIÓN -->
-
             <div class="card-content">
 
-
                 <h3>
-
-                    Imagen 360°
-                    <br>
-                    Panorámica
-
+                    Próxima propiedad
                 </h3>
 
 
                 <div class="card-location">
 
-                    GRUPO OSES INMOBILIARIA
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Grupo OSES Inmobiliaria
 
                 </div>
 
 
-                <div class="tags">
+                <details class="property-info">
 
-                    <span class="tag">
+                    <summary>
 
-                        Tour 2
+                        Ver información
 
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </summary>
+
+
+                    <div class="description">
+
+                        <p>
+                            Estamos preparando una nueva
+                            propiedad para ti.
+                        </p>
+
+
+                        <p>
+                            Muy pronto podrás conocer todos
+                            sus detalles y realizar el recorrido
+                            virtual.
+                        </p>
+
+                    </div>
+
+                </details>
+
+
+                <div class="soon-message">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                    <span>
+                        Disponible muy pronto
                     </span>
 
-
-                    <span class="tag">
-
-                        Tour 360°
-
-                    </span>
-
                 </div>
-
-
-                <p class="description">
-
-                    Explora esta propiedad en
-                    recorrido interactivo 360°.
-
-                </p>
-
-
-                <div class="card-buttons">
-
-
-                    <!-- LINK DIRECTO A PANOEE -->
-
-                    <a
-                        href="https://panoee.com/ejemplo456"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="enter-btn"
-                    >
-
-                        Entrar
-
-                    </a>
-
-
-                    <!-- ACTUALIZAR -->
-
-                    <button
-                        type="button"
-                        class="update-btn"
-                        onclick="actualizar('Propiedad 02')"
-                    >
-
-                        Actualizar
-
-                    </button>
-
-
-                </div>
-
 
             </div>
-
 
         </article>
 
 
 
         <!-- =================================================
-             PROPIEDAD 03
+             PROPIEDAD 03 - MUY PRONTO
         ================================================== -->
 
-        <article class="card">
+        <article class="card coming-soon">
 
-
-            <!-- IMAGEN -->
 
             <div class="card-image">
 
                 <img
-                    src="imagenes/proyecto.jpg"
-                    alt="Proyecto propiedad 3"
+                    src="imag/logo d eventas NEDGR0_Mesa de trabajo 1.png"
+                    alt="Próximo proyecto"
                 >
+
+
+                <div class="coming-overlay">
+
+                    <span>
+                        MUY PRONTO
+                    </span>
+
+                </div>
 
             </div>
 
 
-            <!-- INFORMACIÓN -->
-
             <div class="card-content">
 
-
                 <h3>
-
-                    Avance de Obra
-                    <br>
-                    Proyecto
-
+                    Próximo proyecto
                 </h3>
 
 
                 <div class="card-location">
 
-                    Proyecto Grupo OSES
+                    <i class="fa-solid fa-building"></i>
+
+                    Grupo OSES
 
                 </div>
 
 
-                <div class="tags">
+                <details class="property-info">
 
-                    <span class="tag">
+                    <summary>
 
-                        Tour 3
+                        Ver información
 
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </summary>
+
+
+                    <div class="description">
+
+                        <p>
+                            Estamos preparando un nuevo
+                            proyecto inmobiliario.
+                        </p>
+
+
+                        <p>
+                            Muy pronto podrás conocer
+                            toda la información.
+                        </p>
+
+                    </div>
+
+                </details>
+
+
+                <div class="soon-message">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                    <span>
+                        Disponible muy pronto
                     </span>
 
-
-                    <span class="tag">
-
-                        Tour 360°
-
-                    </span>
-
                 </div>
-
-
-                <p class="description">
-
-                    Conoce el avance del proyecto
-                    mediante nuestro recorrido 360°.
-
-                </p>
-
-
-                <div class="card-buttons">
-
-
-                    <!-- LINK DIRECTO A PANOEE -->
-
-                    <a
-                        href="https://panoee.com/ejemplo789"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="enter-btn"
-                    >
-
-                        Entrar
-
-                    </a>
-
-
-                    <!-- ACTUALIZAR -->
-
-                    <button
-                        type="button"
-                        class="update-btn"
-                        onclick="actualizar('Propiedad 03')"
-                    >
-
-                        Actualizar
-
-                    </button>
-
-
-                </div>
-
 
             </div>
-
 
         </article>
 
 
 
         <!-- =================================================
-             PROPIEDAD 04
+             PROPIEDAD 04 - MUY PRONTO
         ================================================== -->
 
-        <article class="card">
+        <article class="card coming-soon">
 
-
-            <!-- IMAGEN -->
 
             <div class="card-image">
 
                 <img
-                    src="imagenes/terreno.jpg"
-                    alt="Terreno propiedad 4"
+                    src="imag/logo d eventas NEDGR0_Mesa de trabajo 1.png"
+                    alt="Próximo terreno"
                 >
+
+
+                <div class="coming-overlay">
+
+                    <span>
+                        MUY PRONTO
+                    </span>
+
+                </div>
 
             </div>
 
 
-            <!-- INFORMACIÓN -->
-
             <div class="card-content">
 
-
                 <h3>
-
-                    Terreno en Venta
-                    <br>
-                    Los Reyes
-
+                    Próximo terreno
                 </h3>
 
 
                 <div class="card-location">
 
-                    Terreno en venta
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Grupo OSES Inmobiliaria
 
                 </div>
 
 
-                <div class="tags">
+                <details class="property-info">
 
-                    <span class="tag">
+                    <summary>
 
-                        Tour 4
+                        Ver información
 
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </summary>
+
+
+                    <div class="description">
+
+                        <p>
+                            Una nueva oportunidad inmobiliaria
+                            estará disponible próximamente.
+                        </p>
+
+
+                        <p>
+                            Mantente atento a nuestras
+                            próximas propiedades.
+                        </p>
+
+                    </div>
+
+                </details>
+
+
+                <div class="soon-message">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                    <span>
+                        Disponible muy pronto
                     </span>
 
-
-                    <span class="tag">
-
-                        Tour 360°
-
-                    </span>
-
                 </div>
-
-
-                <p class="description">
-
-                    Explora este proyecto en
-                    recorrido interactivo 360°.
-
-                </p>
-
-
-                <div class="card-buttons">
-
-
-                    <!-- LINK DIRECTO -->
-
-                    <a
-                        href="https://docs.google.com/spreadsheets/d/160RAGdEhE29T4YFPQn5SFpOSs_aWK1pNuoCoPsW-hkE/edit?gid=1681709721#gid=1681709721"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="enter-btn"
-                    >
-
-                        Entrar
-
-                    </a>
-
-
-                    <!-- ACTUALIZAR -->
-
-                    <button
-                        type="button"
-                        class="update-btn"
-                        onclick="actualizar('Propiedad 04')"
-                    >
-
-                        Actualizar
-
-                    </button>
-
-
-                </div>
-
 
             </div>
 
-
         </article>
-
 
 
     </main>
@@ -590,23 +530,13 @@
 
     <!-- =====================================================
          PIE DE PÁGINA
-         
-         SOLO FACEBOOK
-         INSTAGRAM
-         TIKTOK
-         
-         WHATSAPP NO ESTÁ AQUÍ
     ====================================================== -->
 
     <footer class="footer">
 
 
-        <!-- REDES SOCIALES -->
-
         <div class="footer-social">
 
-
-            <!-- FACEBOOK -->
 
             <a
                 href="https://www.facebook.com/profile.php?id=100064402140163"
@@ -620,8 +550,6 @@
             </a>
 
 
-            <!-- INSTAGRAM -->
-
             <a
                 href="https://www.instagram.com/"
                 target="_blank"
@@ -633,8 +561,6 @@
 
             </a>
 
-
-            <!-- TIKTOK -->
 
             <a
                 href="https://www.tiktok.com/@inmobiliaria.grupooses?is_from_webapp=1&sender_device=pc"
@@ -651,8 +577,6 @@
         </div>
 
 
-        <!-- TEXTO -->
-
         <div class="footer-text">
 
             © Inmobiliaria Grupo OSES ·
@@ -666,28 +590,6 @@
 
 </div>
 
-
-
-<!-- =====================================================
-     JAVASCRIPT
-     
-     SOLO PARA EL BOTÓN ACTUALIZAR
-====================================================== -->
-
-<script>
-
-    function actualizar(nombre) {
-
-        alert(
-            "Actualización solicitada para: " + nombre
-        );
-
-    }
-
-</script>
-
-
 </body>
 
 </html>
-```
