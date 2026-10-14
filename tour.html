@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recorrido 360°</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body class="tour">
+<div id="estadoCarga" role="status" aria-live="polite">
+  <div class="carga-card">
+    <span class="carga-linea"></span>
+    <div class="carga-puntos"><i></i><i></i><i></i></div>
+    <h4>TOUR 360</h4>
+    <p id="cargaMsg">Unos segundos por favor preparando entorno</p>
+    <small id="cargaSub">Tardarías más yendo hasta allá jeje :)</small>
+  </div>
+</div>
+<div id="visor"></div>
+<svg id="brujulaUI" viewBox="0 0 100 100" width="100" aria-label="Brújula"><circle cx="50" cy="50" r="46" fill="#000a" stroke="#fff" stroke-width="2"/><path d="M50 8 62 50H38Z" fill="#e5392f"/><path d="M50 92 62 50H38Z" fill="#ddd"/><text x="50" y="27" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">N</text></svg>
+<a id="marcaProyecto" href="index.html" title="Volver al catálogo"><img id="logoP" alt="" class="oculto"><span><b id="nomP"></b><small id="subP"></small></span></a>
+<button class="fab oculto" id="btnAbrirMapa" type="button" aria-label="Ver ubicación">⌖</button>
+<button class="fab" id="btnWA" type="button" aria-label="WhatsApp">✆</button>
+<svg id="poligonosSvg" aria-hidden="true"></svg>
+<div id="menuEscenas"></div>
+<div id="visorMedia" class="oculto" role="dialog" aria-modal="true"><button id="mediaCerrar" type="button" aria-label="Cerrar">×</button><div id="mediaCont"></div><p id="mediaTit"></p></div>
+<div class="panel oculto" id="panelMapa"></div>
+<div class="panel oculto" id="panelInfo"></div>
+<div class="panel oculto" id="menuWA"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+<script src="js/config.js"></script>
+<script src="data/catalogo.js"></script>
+<script src="js/data.js"></script>
+<script src="js/extras.js"></script>
+<script src="js/tour.js"></script>
+</body>
+</html>

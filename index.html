@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grupo OSES</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <img id="logo" alt="" class="oculto">
+    <div class="marca"><h1 id="cliente">Catálogo 360</h1><span id="subcliente"></span></div>
+    <div class="acc"><button class="btn mini" id="recargar" type="button">Recargar</button><a class="btn ok mini" id="wa" target="_blank" rel="noopener noreferrer">WhatsApp</a></div>
+  </header>
+  <section class="cab"><h2>Recorridos 360 disponibles</h2><p>Selecciona un proyecto para explorarlo de forma interactiva antes de visitarlo.</p></section>
+  <main class="grid" id="catalogo" aria-live="polite"><p class="vacio">Cargando recorridos…</p></main>
+  <footer class="pie">© Inmobiliaria Grupo OSES · 2026<br><span id="fuente"></span></footer>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="js/config.js"></script>
+<script src="data/catalogo.js"></script>
+<script src="js/data.js"></script>
+<script src="js/catalogo.js"></script>
+</body>
+</html>

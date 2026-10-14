@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Actualizar respaldo del catálogo</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#0b0d10;color:#f4f5f7;margin:0;display:grid;place-items:center;min-height:100vh;padding:16px}
+main{max-width:560px;width:100%;background:#16181c;border:1px solid #2a2d33;border-radius:18px;padding:28px}
+h1{margin:0 0 8px;font-size:1.3rem}p,li{color:#a9adb5;line-height:1.5;font-size:.92rem}
+label.sel{display:block;margin:18px 0;padding:28px;border:2px dashed #3a3f47;border-radius:14px;text-align:center;cursor:pointer;color:#f4f5f7}
+label.sel:hover,label.sel.on{border-color:#1fd35c}
+input{display:none}#msg{margin-top:14px;font-weight:700}.ok{color:#1fd35c}.mal{color:#ff6b6b}
+</style>
+</head>
+<body>
+<main>
+<h1>Actualizar el respaldo (data/catalogo.js)</h1>
+<p>Esto solo hace falta si abres <code>index.html</code> con doble clic. En GitHub Pages el sitio lee el Excel en línea directamente y no necesitas esta herramienta. Si la usas, activa <code>USAR_RESPALDO: true</code> en <code>js/config.js</code>.</p>
+<ol>
+<li>Elige tu archivo <b>catalogo.xlsx</b> (aquí abajo).</li>
+<li>Se descargará un archivo <b>catalogo.js</b>.</li>
+<li>Reemplaza con él el archivo <code>data/catalogo.js</code> del proyecto.</li>
+</ol>
+<label class="sel" id="zona">Haz clic aquí o arrastra tu catalogo.xlsx<input type="file" id="archivo" accept=".xlsx,.xls"></label>
+<div id="msg" role="status"></div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const msg = document.getElementById("msg"), zona = document.getElementById("zona");
+async function procesar(f) {
+    try {
+        const wb = XLSX.read(await f.arrayBuffer(), { type: "array" }), h = {};
+        wb.SheetNames.forEach(n => {
+            const filas = XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: "", raw: false });
+            h[n] = filas.filter(r => r.some(c => String(c).trim() !== ""));
+        });
+        if (!h.Proyectos) throw new Error("No encuentro la hoja Proyectos. ¿Es el archivo correcto?");
+        const js = "window.CATALOGO_HOJAS = " + JSON.stringify(h) + ";\n";
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([js], { type: "text/javascript" }));
+        a.download = "catalogo.js"; a.click();
+        msg.className = "ok"; msg.textContent = "Listo: se descargó catalogo.js (" + Object.keys(h).length + " hojas). Cópialo a la carpeta data/.";
+    } catch (e) { msg.className = "mal"; msg.textContent = "Error: " + e.message; }
+}
+document.getElementById("archivo").onchange = e => e.target.files[0] && procesar(e.target.files[0]);
+zona.ondragover = e => { e.preventDefault(); zona.classList.add("on"); };
+zona.ondragleave = () => zona.classList.remove("on");
+zona.ondrop = e => { e.preventDefault(); zona.classList.remove("on"); e.dataTransfer.files[0] && procesar(e.dataTransfer.files[0]); };
+</script>
+</body>
+</html>
