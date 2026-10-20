@@ -168,3 +168,18 @@
         l.href = wa(a.t, a.m || p.mensajeWhatsApp); l.target = "_blank"; l.rel = "noopener noreferrer"; mw.appendChild(l); });
     $("btnWA").onclick = () => alternar("menuWA");
 })();
+// Modo coordenadas limpio: imprime solo en la consola sin barra flotante
+    if (new URLSearchParams(location.search).get("coords") === "1" || SI(ui.coordenadasActivo)) {
+        let d0 = null; const vis = $("visor");
+        vis.addEventListener("mousedown", e => { d0 = [e.clientX, e.clientY]; });
+        vis.addEventListener("click", e => {
+            if (d0 && Math.hypot(e.clientX - d0[0], e.clientY - d0[1]) > 6) return; // fue un arrastre
+            const c = v.mouseEventToCoords(e), p1 = c[0].toFixed(2), y1 = c[1].toFixed(2);
+            try {
+                navigator.clipboard.writeText(p1 + "\t" + y1);
+                console.log("pitch: " + p1 + ", yaw: " + y1 + " (copiado al portapapeles)");
+            } catch (x) {
+                console.log("pitch: " + p1 + ", yaw: " + y1);
+            }
+        });
+    }
