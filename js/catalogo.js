@@ -7,7 +7,9 @@ function cabecera() {
     document.getElementById("cliente").textContent = c.nombreCliente || "Catálogo 360";
     document.getElementById("subcliente").textContent = c.subtituloCliente || "";
     const lg = document.getElementById("logo");
-    if (c.logoCliente) { lg.src = drive(c.logoCliente); lg.classList.remove("oculto"); }
+    const LOGO = (window.CONFIG || {}).LOGO_PRINCIPAL;
+    if (LOGO) { lg.onerror = () => { lg.onerror = null; if (c.logoCliente) lg.src = drive(c.logoCliente); }; lg.src = LOGO; lg.classList.remove("oculto"); }
+    else if (c.logoCliente) { lg.src = drive(c.logoCliente); lg.classList.remove("oculto"); }
     document.getElementById("wa").href = "https://wa.me/" + (c.whatsappGeneral || "") + "?text=" + encodeURIComponent(c.mensajeWhatsAppGeneral || "");
 }
 function tarjeta(p) {

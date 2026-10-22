@@ -72,7 +72,7 @@ function tienda(c) {
     const { p, v, el, wa, telGen, pin } = c, T = p.tienda || {}, cfg = T.cfg || {}, prods = T.productos || [];
     if (!SI(cfg.tiendaActiva) || !prods.length) return;
     const mon = cfg.moneda || "", cart = {}, fmt = (n, m) => ((m || mon) ? (m || mon) + " " : "") + (n === undefined ? "" : n.toLocaleString("es", { maximumFractionDigits: 2 }));
-    const ov = el("div", "tienda oculto"); ov.style.setProperty("--tp", cfg.colorPrimario || "#1bd459"); ov.style.setProperty("--ts", cfg.colorSecundario || "#0f172a");
+    const ov = el("div", "tienda oculto"); ov.style.setProperty("--tp", cfg.colorPrimario || "#1bd459"); ov.style.setProperty("--ts", cfg.colorSecundario || "#f6f9f7");
     const cab = el("div", "t-cab"), x = el("button", "t-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Cerrar tienda"); x.onclick = () => ov.classList.add("oculto");
     if (cfg.logoTienda) { const i = el("img"); i.src = drive(cfg.logoTienda); i.alt = ""; i.onerror = () => i.remove(); cab.appendChild(i); }
     cab.append(el("h2", "", cfg.nombreTienda || p.nombreProyecto || "Tienda"), x);

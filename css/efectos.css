@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Grupo OSES · efectos visuales y microinteracciones (tema BLANCO)
+   Se carga DESPUÉS de app.css. Para quitar todos los efectos, borra la línea
+   <link ... efectos.css> y <script ... efectos.js> de index.html y tour.html.
+   ========================================================================== */
+:root{--e-verde:#14b85a;--e-verde2:#5fe39a;--e-ease:cubic-bezier(.22,.8,.3,1)}
+html{scroll-behavior:smooth}
+
+/* ---------- Barra de progreso al desplazarse (catálogo) ---------- */
+#eProgreso{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,var(--e-verde),var(--e-verde2));z-index:60;pointer-events:none}
+
+/* ---------- Botones ---------- */
+.btn,.fab,.t-chip{transition:transform .25s var(--e-ease),box-shadow .25s var(--e-ease),background-color .25s,border-color .25s,color .25s,filter .25s}
+.btn{position:relative;overflow:hidden}
+@media (hover:hover){
+  .btn:hover,.fab:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(20,48,32,.16),0 0 0 3px #14b85a22}
+  .btn:not(.ok):hover,.fab:not(#btnWA):hover{border-color:var(--e-verde);color:#0c7a3b}
+  .btn.ok:hover,#btnWA:hover{filter:brightness(1.06) saturate(1.08);color:#fff}
+}
+.btn:active,.fab:active{transform:translateY(0) scale(.96);box-shadow:none;transition-duration:.08s}
+.btn:focus-visible,.fab:focus-visible{outline:3px solid #14b85a66;outline-offset:3px}
+.e-ripple{position:absolute;border-radius:50%;pointer-events:none;background:currentColor;opacity:.2;transform:scale(0);animation:e-rip .6s ease-out forwards}
+@keyframes e-rip{to{transform:scale(1);opacity:0}}
+
+/* ---------- Tarjetas: elevación, sombra, zoom de imagen e inclinación suave ---------- */
+#catalogo>:not(p),.card{
+  position:relative;overflow:hidden;
+  transform:perspective(900px) translateY(var(--ty,0px)) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform .35s var(--e-ease),box-shadow .35s var(--e-ease),border-color .3s}
+#catalogo>:not(p)::after,.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),#14b85a14,transparent 60%)}
+#catalogo img,.card img{transition:transform .9s var(--e-ease),filter .5s}
+@media (hover:hover){
+  #catalogo>:not(p):hover,.card:hover{--ty:-8px;box-shadow:0 26px 50px rgba(20,48,32,.17),0 0 0 1px #14b85a55;border-color:#9fdcb7}
+  #catalogo>:not(p):hover::after,.card:hover::after{opacity:1}
+  #catalogo>:not(p):hover img,.card:hover img{transform:scale(1.07);filter:saturate(1.08) contrast(1.02)}
+}
+#catalogo>:not(p):active,.card:active{--ty:-2px;scale:.99}
+/* logo y marca */
+.top img,#logo,#marcaProyecto img{transition:transform .35s var(--e-ease),filter .35s}
+@media (hover:hover){.top img:hover,#logo:hover,#marcaProyecto:hover img{transform:scale(1.04);filter:drop-shadow(0 4px 10px rgba(20,48,32,.2))}}
+
+/* ---------- Aparecer al desplazarse (scroll reveal) ---------- */
+.js-reveal .reveal:not(.visible){opacity:0}
+.js-reveal .reveal.visible{animation:e-in .75s var(--e-ease) both;animation-delay:calc(var(--i,0)*90ms)}
+@keyframes e-in{from{opacity:0;translate:0 30px}to{opacity:1;translate:0 0}}
+
+/* ---------- Recorrido 360: puntos (hotspots) claros ---------- */
+.lote,.pin{transition:box-shadow .25s var(--e-ease),filter .25s;box-shadow:0 3px 10px #0007}
+.lote{animation:e-pulso 2.2s ease-out infinite}
+.pin{animation:e-pulso-v 2.6s ease-out infinite}
+@keyframes e-pulso{0%{box-shadow:0 3px 10px #0007,0 0 0 0 #ffffffcc}70%,100%{box-shadow:0 3px 10px #0007,0 0 0 14px #ffffff00}}
+/* OJO: al pasar el mouse NO se cambia el tamaño del punto (con "scale" el clic fallaba en computadora); solo se resalta con un aro. */
+@media (hover:hover){.lote:hover,.pin:hover{filter:brightness(1.12);animation-play-state:paused;z-index:3;box-shadow:0 3px 10px #0007,0 0 0 6px #ffffffd9}}
+@media (pointer:coarse){.lote{font-size:14px}}
+/* Flechas para ir a otra escena: círculo verde con flecha blanca */
+.pnlm-hotspot.pnlm-scene{width:30px;height:30px;border-radius:50%;border:2px solid #fff;opacity:.4;
+  background-color:#14b85af2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 15l7-7 7 7'/%3E%3C/svg%3E");
+  background-position:center;background-repeat:no-repeat;background-size:16px;
+  box-shadow:0 2px 8px #0004;animation:none;transition:opacity .3s,box-shadow .25s var(--e-ease),background-color .25s}
+.pnlm-hotspot.pnlm-scene:hover,.pnlm-hotspot.pnlm-scene:focus-visible{opacity:1;background-color:#0c9448;box-shadow:0 4px 14px #0007,0 0 0 5px #ffffffcc}
+@keyframes e-pulso-v{0%{box-shadow:0 4px 14px #0007,0 0 0 0 #14b85aaa}70%,100%{box-shadow:0 4px 14px #0007,0 0 0 16px #14b85a00}}
+div.pnlm-tooltip span{background:#fffffff5;color:#14201a;border:1px solid #cfe6d8;border-radius:10px;font:700 .85rem Montserrat,sans-serif;padding:6px 12px;box-shadow:0 8px 20px rgba(20,48,32,.2)}
+div.pnlm-tooltip:hover span:after{border-color:#fffffff5 transparent transparent transparent}
+/* Controles de zoom de Pannellum en blanco */
+.pnlm-controls{border-radius:12px;border:1px solid #e3e9e5;box-shadow:0 6px 18px rgba(20,48,32,.2);overflow:hidden}
+/* Título grande de la escena que Pannellum pone abajo a la izquierda («VISTA LATERAL»): oculto.
+   Para volver a mostrarlo, borra la regla siguiente. */
+.pnlm-panorama-info{display:none!important}
+/* Menú de escenas («Vista lateral», etc.): al costado, pequeño y casi imperceptible; se aviva al acercar el mouse */
+#menuEscenas{left:76px;transform:none;bottom:22px;gap:4px;padding:3px;max-width:calc(100% - 160px);background:#ffffff80;box-shadow:none;opacity:.42;transition:opacity .35s}
+#menuEscenas:hover,#menuEscenas:focus-within{opacity:1}
+#menuEscenas .btn{padding:6px 12px;font-size:.66rem;letter-spacing:.02em}
+/* Menú de escenas: botón activo */
+#menuEscenas .btn.on{background:linear-gradient(135deg,#0c9448,var(--e-verde));border-color:#0c9448;color:#fff}
+/* Paneles y ventanas: entran suave */
+.panel{animation:e-panel .3s var(--e-ease)}
+#visorMedia{animation:e-fade .25s ease}
+@keyframes e-panel{from{opacity:0;translate:0 14px;scale:.98}to{opacity:1;translate:0 0;scale:1}}
+@keyframes e-fade{from{opacity:0}to{opacity:1}}
+/* Aviso de ayuda al entrar */
+#eHint{position:fixed;left:50%;bottom:84px;z-index:7;translate:-50% 12px;opacity:0;pointer-events:none;
+  display:flex;align-items:center;gap:10px;background:#fffffff5;color:#14201a;border:1px solid #bfe5cd;border-radius:99px;
+  padding:11px 20px;font:700 .85rem Montserrat,sans-serif;box-shadow:0 12px 30px rgba(20,48,32,.25);max-width:calc(100% - 32px);text-align:center;
+  transition:opacity .5s,translate .5s var(--e-ease)}
+#eHint.ver{opacity:1;translate:-50% 0}
+#eHint i{font-style:normal;font-size:1.2rem;animation:e-mano 1.6s ease-in-out infinite}
+@keyframes e-mano{0%,100%{transform:translateX(-4px)}50%{transform:translateX(6px)}}
+
+/* ---------- Pantalla de carga: «GRUPO OSES · en proceso» (blanca) ---------- */
+#estadoCarga{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:16px;transition:opacity .5s ease;
+  background:radial-gradient(700px 420px at 50% 45%,#e3f6ea,transparent 70%),radial-gradient(900px 600px at 100% 0,#edf5fb,transparent 70%),#fff}
+#estadoCarga.fuera{opacity:0;pointer-events:none}
+.carga-card{width:min(448px,100%);min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:36px 24px;
+  border:1px solid #dcebe2;border-radius:28px;background:#ffffffeb;box-shadow:0 24px 60px rgba(20,48,32,.13);animation:e-card 1s var(--e-ease) both}
+@keyframes e-card{from{opacity:0;translate:0 18px;scale:.97}to{opacity:1;translate:0 0;scale:1}}
+.carga-anillo{width:58px;height:58px;border-radius:50%;border:3px solid #e3ece6;border-top-color:var(--e-verde);border-right-color:var(--e-verde2);margin-bottom:12px;animation:e-giro 1s linear infinite}
+@keyframes e-giro{to{transform:rotate(360deg)}}
+.carga-card h4{margin:0;font-size:clamp(1.5rem,6.5vw,2rem);font-weight:800;letter-spacing:.26em;text-indent:.26em;
+  background:linear-gradient(90deg,#14201a 25%,var(--e-verde) 50%,#14201a 75%);background-size:240% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:e-brillo 2.8s linear infinite}
+@keyframes e-brillo{from{background-position:120% 0}to{background-position:-120% 0}}
+.carga-card p{margin:0;font-weight:700;font-size:.95rem;letter-spacing:.32em;text-indent:.32em;color:#0c9448}
+#estadoCarga:not(.error) .carga-card p::after{content:"...";display:inline-block;width:0;overflow:hidden;vertical-align:bottom;letter-spacing:.1em;animation:e-puntos 1.4s steps(4) infinite}
+@keyframes e-puntos{to{width:1.2em}}
+.carga-barra{width:min(220px,70%);height:4px;border-radius:99px;background:#e3ece6;overflow:hidden;margin:10px 0 4px}
+.carga-barra i{display:block;height:100%;width:40%;border-radius:inherit;background:linear-gradient(90deg,transparent,var(--e-verde),var(--e-verde2));animation:e-barra 1.4s ease-in-out infinite}
+@keyframes e-barra{from{translate:-110% 0}to{translate:260% 0}}
+.carga-card small{color:#66736b;font-size:.8rem}
+#estadoCarga.error .carga-anillo,#estadoCarga.error .carga-barra{display:none}
+#estadoCarga.error .carga-card p{color:#b3261e;letter-spacing:.02em;text-indent:0;font-size:.95rem}
+
+/* ---------- Respeto a quien prefiere menos movimiento ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .carga-anillo{animation:e-giro 2s linear infinite!important;animation-duration:2s!important;animation-iteration-count:infinite!important}
+}
+
+/* ---------- Pantalla de carga con el logo de la empresa ---------- */
+.carga-logo{display:block;width:min(320px,82%);height:auto;margin:0 auto 6px;animation:e-logo 2.4s ease-in-out infinite}
+@keyframes e-logo{0%,100%{opacity:.88;transform:scale(.985)}50%{opacity:1;transform:scale(1)}}
+#estadoCarga.error .carga-logo{animation:none;opacity:1}

@@ -15,7 +15,7 @@
 
     // Marca del proyecto
     $("nomP").textContent = p.nombreProyecto || ""; $("subP").textContent = p.subtituloProyecto || "";
-    const lg = p.logoProyecto || cat.cli.logoCliente;
+    const lg = p.logoProyecto || cat.cli.logoCliente;   // en el recorrido el logo sigue viniendo del Excel (hoja Proyectos, logoProyecto)
     if (lg) { $("logoP").src = drive(lg); $("logoP").classList.remove("oculto"); }
 
     // Paneles (solo uno abierto)
@@ -29,7 +29,7 @@
         const lc = s.lineaColor || "#fff", lt = n("lineaTop", -90), ll = n("lineaLeft", 0), gr = n("lineaGrosor", 2);
         const v1 = el("i"); v1.style.cssText = "position:absolute;background:" + lc + ";left:" + ll + "px;top:" + lt + "px;width:" + gr + "px;height:" + n("lineaAlto", 95) + "px";
         const h1 = el("i"); h1.style.cssText = "position:absolute;background:" + lc + ";left:" + ll + "px;top:" + lt + "px;height:" + gr + "px;width:" + n("lineaAncho", 95) + "px";
-        const t = el("div"); t.style.cssText = "position:absolute;white-space:nowrap;left:" + n("textoLeft", 12) + "px;top:" + n("textoTop", -118) + "px;padding:" + n("padding", 0) + "px;border-radius:" + n("radio", 0) + "px;font-family:" + (s.textoFuente || "Raleway") + ",sans-serif";
+        const t = el("div"); t.style.cssText = "position:absolute;white-space:nowrap;left:" + n("textoLeft", 12) + "px;top:" + n("textoTop", -118) + "px;padding:" + n("padding", 0) + "px;border-radius:" + n("radio", 0) + "px;font-family:" + (s.textoFuente || "Montserrat") + ",sans-serif";
         if (s.fondo && s.fondo !== "transparent") t.style.background = s.fondo;
         if (SI(s.sombra)) t.style.textShadow = "0 1px 4px #000";
         const a = el("div", "", s.titulo); a.style.cssText = "color:" + (s.tituloColor || "#fff") + ";font-size:" + n("tituloTamano", 17) + "px;font-weight:" + (s.tituloPeso || 700);
@@ -70,7 +70,7 @@
             clickHandlerFunc: () => verLote(l)
         }));
         p.nav.filter(n => n.escenaOrigen === e.idEscena && scenesIds().includes(n.escenaDestino) && num(n.pitch) !== undefined).forEach(n => hs.push({
-            pitch: num(n.pitch), yaw: num(n.yaw), type: "scene", sceneId: n.escenaDestino, text: n.texto || undefined
+            pitch: num(n.pitch), yaw: num(n.yaw), type: "scene", sceneId: n.escenaDestino, text: n.texto || (p.escenas.find(z => z.idEscena === n.escenaDestino) || {}).nombreMenu || undefined
         }));
         p.estructuras.filter(s => s.escena === e.idEscena && s.titulo && num(s.pitch) !== undefined).forEach(s => hs.push({
             pitch: num(s.pitch), yaw: num(s.yaw), type: "custom", cssClass: "etq", createTooltipFunc: d => etiqueta(d, s)
@@ -95,13 +95,43 @@
     const primera = scenes[p.escenaInicial] ? p.escenaInicial : p.escenas[0].idEscena;
     const ui = p.ui || {};   // hoja UIConfig (opcional)
     const hfovMinFinal = x => { const s = (window.CONFIG || {}).HFOV_MIN_SEGURO || 0; return (x == null && !s) ? undefined : Math.max(x || 0, s); };
+    // Computadora (pantalla horizontal): el mismo hfov muestra mucho menos alto que en el celular,
+    // por eso en vistas aéreas los lotes quedaban cortados. Aquí se permite alejar más el zoom.
+    const horizontal = () => innerWidth > innerHeight * 1.15;
+    const hfovMaxEscritorio = (window.CONFIG || {}).HFOV_MAX_ESCRITORIO || 150;
+    const maxFinal = () => { const m = num(ui.hfovMax); return horizontal() ? Math.max(m || 0, hfovMaxEscritorio) : m; };
     const ajustes = def({
-        minHfov: hfovMinFinal(num(ui.hfovMin)), maxHfov: num(ui.hfovMax),
+        minHfov: hfovMinFinal(num(ui.hfovMin)), maxHfov: maxFinal(),
+        friction: (window.CONFIG || {}).INERCIA, touchPanSpeedCoeffFactor: (window.CONFIG || {}).VELOCIDAD_ARRASTRE,
         showZoomCtrl: ui.zoomVisible ? SI(ui.zoomVisible) : undefined,
         showFullscreenCtrl: ui.fullscreenVisible ? SI(ui.fullscreenVisible) : undefined
     });
-    const v = pannellum.viewer("visor", { default: Object.assign({ firstScene: primera, autoLoad: true, compass: false, sceneFadeDuration: 700 }, ajustes), scenes });
+    const v = pannellum.viewer("visor", { default: Object.assign({ firstScene: primera, autoLoad: true, compass: false, sceneFadeDuration: (window.CONFIG || {}).TRANSICION_ESCENA_MS || 700 }, ajustes), scenes });
+    // Vista aérea en computadora: centra la cámara en los lotes y aleja el zoom lo justo para que TODOS queden a la vista
+    function ajustarVistaAerea() {
+        if (!horizontal() || (window.CONFIG || {}).AEREA_AJUSTE_ESCRITORIO === false || typeof proy !== "function") return;
+        const id = v.getScene(), rad = Math.PI / 180;
+        const ls = p.lotes.filter(l => l.escena === id && num(l.pitch) !== undefined && num(l.yaw) !== undefined);
+        if (ls.length < 3) return;
+        const pitProm = ls.reduce((t, l) => t + num(l.pitch), 0) / ls.length;
+        if (pitProm > -45) return;                                          // solo escenas aéreas (lotes vistos desde arriba)
+        let sx = 0, sy = 0, sz = 0;
+        ls.forEach(l => { const a = num(l.pitch) * rad, b = num(l.yaw) * rad; sx += Math.cos(a) * Math.sin(b); sy += Math.sin(a); sz += Math.cos(a) * Math.cos(b); });
+        const n = Math.hypot(sx, sy, sz) || 1, cp = Math.asin(sy / n) / rad, cy = Math.atan2(sx, sz) / rad;
+        let t = 0;                                                          // tangente de medio campo necesaria
+        const W = innerWidth, H = innerHeight, margen = 1.4;                // margen: logo arriba y menú abajo
+        for (const l of ls) {
+            const r = proy(num(l.pitch), num(l.yaw), cp, cy);
+            if (r.z <= 0.01) return;
+            t = Math.max(t, Math.abs(r.x / r.z) * margen, Math.abs(r.y / r.z) * margen * (W / H));
+        }
+        const hf = 2 * Math.atan(t) / rad, c = v.getConfig();
+        v.setPitch(cp, false); v.setYaw(cy, false);
+        v.setHfov(Math.min(c.maxHfov, Math.max(c.minHfov, hf)), false);
+    }
     v.on("load", ocultarCarga);
+    v.on("load", ajustarVistaAerea);
+    v.on("load", () => { if (window.EFECTOS) EFECTOS.suavizarVisor(v, window.CONFIG || {}); });   // zoom gradual (js/efectos.js)
     v.on("error", m => falla("No se pudo cargar la imagen 360: " + m));
 
     if (window.EXTRAS) EXTRAS.init({ p, v, el, wa, telGen, pin, verLote });   // polígonos, modelos 3D y tienda (js/extras.js)
@@ -151,7 +181,10 @@
     }
 
     // Menú de escenas
-    if (p.escenas.length > 1) p.escenas.forEach(e => { const bt = el("button", "btn mini", e.nombreMenu || e.idEscena); bt.type = "button"; bt.onclick = () => v.loadScene(e.idEscena); $("menuEscenas").appendChild(bt); });
+    const botonesEscena = {};
+    if (p.escenas.length > 1) p.escenas.forEach(e => { const bt = el("button", "btn mini", e.nombreMenu || e.idEscena); bt.type = "button"; bt.onclick = () => v.loadScene(e.idEscena); botonesEscena[e.idEscena] = bt; $("menuEscenas").appendChild(bt); });
+    const marcarEscena = id => Object.keys(botonesEscena).forEach(k => botonesEscena[k].classList.toggle("on", k === id));
+    marcarEscena(primera); v.on("scenechange", marcarEscena);
 
     // Mapa
     if (SI(p.mapaActivo) && num(p.mapaLat) !== undefined && num(p.mapaLng) !== undefined) {
@@ -168,4 +201,3 @@
         l.href = wa(a.t, a.m || p.mensajeWhatsApp); l.target = "_blank"; l.rel = "noopener noreferrer"; mw.appendChild(l); });
     $("btnWA").onclick = () => alternar("menuWA");
 })();
-
