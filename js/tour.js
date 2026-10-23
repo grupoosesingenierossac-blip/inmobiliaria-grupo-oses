@@ -107,6 +107,37 @@
         showFullscreenCtrl: ui.fullscreenVisible ? SI(ui.fullscreenVisible) : undefined
     });
     const v = pannellum.viewer("visor", { default: Object.assign({ firstScene: primera, autoLoad: true, compass: false, sceneFadeDuration: (window.CONFIG || {}).TRANSICION_ESCENA_MS || 700 }, ajustes), scenes });
+
+    // --- AÑADIDO: soporte para enlaces de recorridos Panoee en la columna imagen360 ---
+    function cambiarEscenaConPanoee(idEscena) {
+        const escena = p.escenas.find(e => e.idEscena === idEscena);
+        if (!escena) return;
+        const url = String(escena.imagen360 || "").trim();
+        const visor = $("visor");
+        let marco = $("visorPanoee");
+
+        if (/^https?:\/\/(?:[\w-]+\.)*panoee\.net(?:\/|$)/i.test(url)) {
+            if (!marco) {
+                marco = document.createElement("iframe");
+                marco.id = "visorPanoee";
+                marco.title = escena.nombreMenu || "Recorrido virtual Panoee";
+                marco.setAttribute("allow", "fullscreen; autoplay; gyroscope; accelerometer");
+                marco.setAttribute("allowfullscreen", "");
+                marco.style.cssText = "position:absolute;inset:0;width:100%;height:100%;min-height:400px;border:0;display:block;z-index:10;background:#000;";
+                visor.style.position = "relative";
+                visor.style.minHeight = "400px";
+                visor.appendChild(marco);
+            }
+            marco.title = escena.nombreMenu || "Recorrido virtual Panoee";
+            marco.src = url;
+            ocultarCarga();
+        } else {
+            if (marco) marco.remove();
+            v.loadScene(idEscena);
+        }
+        Object.keys(botonesEscena).forEach(k => botonesEscena[k].classList.toggle("on", k === idEscena));
+    }
+    // --- FIN DEL AÑADIDO PANOEE ---
     // Vista aérea en computadora: centra la cámara en los lotes y aleja el zoom lo justo para que TODOS queden a la vista
     function ajustarVistaAerea() {
         if (!horizontal() || (window.CONFIG || {}).AEREA_AJUSTE_ESCRITORIO === false || typeof proy !== "function") return;
@@ -182,9 +213,11 @@
 
     // Menú de escenas
     const botonesEscena = {};
-    if (p.escenas.length > 1) p.escenas.forEach(e => { const bt = el("button", "btn mini", e.nombreMenu || e.idEscena); bt.type = "button"; bt.onclick = () => v.loadScene(e.idEscena); botonesEscena[e.idEscena] = bt; $("menuEscenas").appendChild(bt); });
+    if (p.escenas.length > 1) p.escenas.forEach(e => { const bt = el("button", "btn mini", e.nombreMenu || e.idEscena); bt.type = "button"; bt.onclick = () => cambiarEscenaConPanoee(e.idEscena); botonesEscena[e.idEscena] = bt; $("menuEscenas").appendChild(bt); });
     const marcarEscena = id => Object.keys(botonesEscena).forEach(k => botonesEscena[k].classList.toggle("on", k === id));
     marcarEscena(primera); v.on("scenechange", marcarEscena);
+    // Cargar la escena inicial también si su enlace es de Panoee
+    cambiarEscenaConPanoee(primera);
 
     // Mapa
     if (SI(p.mapaActivo) && num(p.mapaLat) !== undefined && num(p.mapaLng) !== undefined) {
