@@ -61,6 +61,18 @@
     document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarMedia(); });
 
     // Escenas + puntos interactivos
+    // Google Sheets a veces entrega los enlaces como etiquetas <a href="...">; normalizamos la URL.
+    function limpiarURL(valor) {
+        const texto = String(valor || "").trim();
+        const enlace = texto.match(/href=["']([^"']+)["']/i);
+        return enlace ? enlace[1].trim() : texto.replace(/<[^>]*>/g, "").trim();
+    }
+    function esEnlacePanoee(valor) {
+        return /^https?:\/\/(?:[\w-]+\.)*panoee\.net(?:\/|$)/i.test(limpiarURL(valor));
+    }
+    // Imagen 360 real de respaldo para que Pannellum no intente cargar Panoee como panorama.
+    const escenaRespaldo = p.escenas.find(e => !esEnlacePanoee(e.imagen360));
+    const panoramaRespaldo = escenaRespaldo ? limpiarURL(escenaRespaldo.imagen360) : "";
     const scenes = {};
     p.escenas.forEach(e => {
         const hs = [];
@@ -69,14 +81,16 @@
             createTooltipFunc: d => { d.textContent = l.numero || ""; d.style.background = l.color || "#006400"; d.title = l.titulo || ""; },
             clickHandlerFunc: () => verLote(l)
         }));
-        p.nav.filter(n => n.escenaOrigen === e.idEscena && scenesIds().includes(n.escenaDestino) && num(n.pitch) !== undefined).forEach(n => hs.push({
-            pitch: num(n.pitch), yaw: num(n.yaw), type: "scene", sceneId: n.escenaDestino, text: n.texto || (p.escenas.find(z => z.idEscena === n.escenaDestino) || {}).nombreMenu || undefined
+        p.nav.filter(n => n.escenaOrigen === e.idEscena && scenesIds().includes(n.escenaDestino) && num(n.pitch) !== undefined && num(n.yaw) !== undefined).forEach(n => hs.push({
+            pitch: num(n.pitch), yaw: num(n.yaw), type: "custom", cssClass: "pin",
+            clickHandlerFunc: () => cambiarEscenaConPanoee(n.escenaDestino),
+            createTooltipFunc: d => { d.textContent = n.texto || (p.escenas.find(z => z.idEscena === n.escenaDestino) || {}).nombreMenu || "Ir"; d.title = d.textContent; }
         }));
         p.estructuras.filter(s => s.escena === e.idEscena && s.titulo && num(s.pitch) !== undefined).forEach(s => hs.push({
             pitch: num(s.pitch), yaw: num(s.yaw), type: "custom", cssClass: "etq", createTooltipFunc: d => etiqueta(d, s)
         }));
         p.externos.filter(x => x.escena === e.idEscena && num(x.pitch) !== undefined).forEach(x => hs.push(pin(x, "🔗", () => {
-            if (x.escenaDestino && scenes[x.escenaDestino]) v.loadScene(x.escenaDestino);
+            if (x.escenaDestino && scenes[x.escenaDestino]) cambiarEscenaConPanoee(x.escenaDestino);
             else if (/^https?:\/\//i.test(x.link)) window.open(x.link, "_blank", "noopener");
         })));
         p.media.filter(x => x.escena === e.idEscena && num(x.pitch) !== undefined).forEach(x => hs.push(pin(x, /video/i.test(x.tipo) ? "▶" : "📷", () => abrirMedia(x))));
@@ -87,7 +101,9 @@
                 if (SI(t.negrita)) d.style.fontWeight = "700"; if (t.fondo && t.fondo !== "transparent") d.style.background = t.fondo;
             }
         }));
-        scenes[e.idEscena] = def({ title: e.nombreMenu, type: "equirectangular", panorama: drive(e.imagen360, (window.CONFIG || {}).PANORAMA_ANCHO),
+        scenes[e.idEscena] = def({ title: e.nombreMenu, type: "equirectangular",
+            // Panoee se muestra en iframe; Pannellum solo recibe imágenes 360 normales.
+            panorama: drive(esEnlacePanoee(e.imagen360) ? panoramaRespaldo : limpiarURL(e.imagen360), (window.CONFIG || {}).PANORAMA_ANCHO),
             pitch: num(e.pitchInicial), yaw: num(e.yawInicial), hfov: num(e.hfovInicial) || 100, hotSpots: hs });
     });
     function scenesIds() { return p.escenas.map(e => e.idEscena); }
@@ -106,17 +122,18 @@
         showZoomCtrl: ui.zoomVisible ? SI(ui.zoomVisible) : undefined,
         showFullscreenCtrl: ui.fullscreenVisible ? SI(ui.fullscreenVisible) : undefined
     });
-    const v = pannellum.viewer("visor", { default: Object.assign({ firstScene: primera, autoLoad: true, compass: false, sceneFadeDuration: (window.CONFIG || {}).TRANSICION_ESCENA_MS || 700 }, ajustes), scenes });
+    const primeraPannellum = (p.escenas.find(e => !esEnlacePanoee(e.imagen360)) || {}).idEscena || primera;
+    const v = pannellum.viewer("visor", { default: Object.assign({ firstScene: primeraPannellum, autoLoad: true, compass: false, sceneFadeDuration: (window.CONFIG || {}).TRANSICION_ESCENA_MS || 700 }, ajustes), scenes });
 
     // --- AÑADIDO: soporte para enlaces de recorridos Panoee en la columna imagen360 ---
     function cambiarEscenaConPanoee(idEscena) {
         const escena = p.escenas.find(e => e.idEscena === idEscena);
         if (!escena) return;
-        const url = String(escena.imagen360 || "").trim();
+        const url = limpiarURL(escena.imagen360);
         const visor = $("visor");
         let marco = $("visorPanoee");
 
-        if (/^https?:\/\/(?:[\w-]+\.)*panoee\.net(?:\/|$)/i.test(url)) {
+        if (esEnlacePanoee(url)) {
             if (!marco) {
                 marco = document.createElement("iframe");
                 marco.id = "visorPanoee";
@@ -215,7 +232,7 @@
     const botonesEscena = {};
     if (p.escenas.length > 1) p.escenas.forEach(e => { const bt = el("button", "btn mini", e.nombreMenu || e.idEscena); bt.type = "button"; bt.onclick = () => cambiarEscenaConPanoee(e.idEscena); botonesEscena[e.idEscena] = bt; $("menuEscenas").appendChild(bt); });
     const marcarEscena = id => Object.keys(botonesEscena).forEach(k => botonesEscena[k].classList.toggle("on", k === id));
-    marcarEscena(primera); v.on("scenechange", marcarEscena);
+    marcarEscena(primera); v.on("scenechange", id => { if (!$("visorPanoee")) marcarEscena(id); });
     // Cargar la escena inicial también si su enlace es de Panoee
     cambiarEscenaConPanoee(primera);
 
