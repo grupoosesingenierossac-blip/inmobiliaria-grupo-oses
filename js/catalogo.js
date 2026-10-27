@@ -31,7 +31,7 @@ function tarjeta(p) {
 async function render(bust, btn) {
     if (btn) { btn.disabled = true; btn.textContent = "Actualizando…"; }
     try {
-        CAT = await cargarCatalogo(bust); cabecera(); document.getElementById("fuente").textContent = "Datos: " + (window.FUENTE_DATOS || "");
+        CAT = await cargarCatalogo(bust); cabecera(); document.getElementById("fuente").textContent = " " + (window.FUENTE_DATOS || "");
         cont.replaceChildren(...(CAT.proyectos.length ? CAT.proyectos.map(tarjeta) : [el("p", "vacio", "No hay proyectos con activo = SI en la hoja Proyectos.")]));
     } catch (e) {
         cont.replaceChildren(el("p", "vacio", "No se pudo leer tu Excel en línea. Motivo: " + e.message));
