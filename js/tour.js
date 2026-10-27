@@ -62,7 +62,11 @@
 
     // Escenas + puntos interactivos
     const scenes = {};
-    p.escenas.forEach(e => {
+    // Escenas cuyo enlace NO es una imagen (por ejemplo un recorrido de Panoee): se muestran dentro de la página, en un marco.
+    const esExterna = e => { const u = String(e.imagen360 || "").trim(); return /^https?:\/\//i.test(u) && !/drive\.google\.com|googleusercontent\.com|\.(jpe?g|png|webp)(\?|#|$)/i.test(u); };
+    const escenasExt = p.escenas.filter(esExterna), escenasPan = p.escenas.filter(e => !esExterna(e)), extPorId = {};
+    escenasExt.forEach(e => extPorId[e.idEscena] = e);
+    escenasPan.forEach(e => {
         const hs = [];
         p.lotes.filter(l => l.escena === e.idEscena && num(l.pitch) !== undefined && num(l.yaw) !== undefined).forEach(l => hs.push({
             pitch: num(l.pitch), yaw: num(l.yaw), type: "custom", cssClass: "lote",
@@ -72,11 +76,17 @@
         p.nav.filter(n => n.escenaOrigen === e.idEscena && scenesIds().includes(n.escenaDestino) && num(n.pitch) !== undefined).forEach(n => hs.push({
             pitch: num(n.pitch), yaw: num(n.yaw), type: "scene", sceneId: n.escenaDestino, text: n.texto || (p.escenas.find(z => z.idEscena === n.escenaDestino) || {}).nombreMenu || undefined
         }));
+        p.nav.filter(n => n.escenaOrigen === e.idEscena && extPorId[n.escenaDestino] && num(n.pitch) !== undefined).forEach(n => hs.push({
+            pitch: num(n.pitch), yaw: num(n.yaw), type: "custom", cssClass: "pnlm-hotspot pnlm-scene",
+            createTooltipFunc: d => { d.title = n.texto || extPorId[n.escenaDestino].nombreMenu || ""; d.setAttribute("role", "button"); },
+            clickHandlerFunc: () => abrirExterno(extPorId[n.escenaDestino])
+        }));
         p.estructuras.filter(s => s.escena === e.idEscena && s.titulo && num(s.pitch) !== undefined).forEach(s => hs.push({
             pitch: num(s.pitch), yaw: num(s.yaw), type: "custom", cssClass: "etq", createTooltipFunc: d => etiqueta(d, s)
         }));
         p.externos.filter(x => x.escena === e.idEscena && num(x.pitch) !== undefined).forEach(x => hs.push(pin(x, "🔗", () => {
             if (x.escenaDestino && scenes[x.escenaDestino]) v.loadScene(x.escenaDestino);
+            else if (x.escenaDestino && extPorId[x.escenaDestino]) abrirExterno(extPorId[x.escenaDestino]);
             else if (/^https?:\/\//i.test(x.link)) window.open(x.link, "_blank", "noopener");
         })));
         p.media.filter(x => x.escena === e.idEscena && num(x.pitch) !== undefined).forEach(x => hs.push(pin(x, /video/i.test(x.tipo) ? "▶" : "📷", () => abrirMedia(x))));
@@ -90,9 +100,13 @@
         scenes[e.idEscena] = def({ title: e.nombreMenu, type: "equirectangular", panorama: drive(e.imagen360, (window.CONFIG || {}).PANORAMA_ANCHO),
             pitch: num(e.pitchInicial), yaw: num(e.yawInicial), hfov: num(e.hfovInicial) || 100, hotSpots: hs });
     });
-    function scenesIds() { return p.escenas.map(e => e.idEscena); }
+    function scenesIds() { return escenasPan.map(e => e.idEscena); }
 
-    const primera = scenes[p.escenaInicial] ? p.escenaInicial : p.escenas[0].idEscena;
+    if (!escenasPan.length) {   // proyecto solo con recorridos externos: el visor necesita una imagen mínima de fondo
+        const cv = document.createElement("canvas"); cv.width = 64; cv.height = 32; const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, 64, 32);
+        scenes._vacio = { type: "equirectangular", panorama: cv.toDataURL("image/jpeg", .8), hfov: 100 };
+    }
+    const primera = scenes[p.escenaInicial] ? p.escenaInicial : (escenasPan[0] ? escenasPan[0].idEscena : "_vacio");
     const ui = p.ui || {};   // hoja UIConfig (opcional)
     const hfovMinFinal = x => { const s = (window.CONFIG || {}).HFOV_MIN_SEGURO || 0; return (x == null && !s) ? undefined : Math.max(x || 0, s); };
     // Computadora (pantalla horizontal): el mismo hfov muestra mucho menos alto que en el celular,
@@ -128,6 +142,32 @@
         const hf = 2 * Math.atan(t) / rad, c = v.getConfig();
         v.setPitch(cp, false); v.setYaw(cy, false);
         v.setHfov(Math.min(c.maxHfov, Math.max(c.minHfov, hf)), false);
+    }
+    // ---- Recorrido externo (Panoee u otro) dentro de la página ----
+    let capaExt = null, extAbierta = null;
+    function abrirExterno(e) {
+        if (!e) return;
+        const url = String(e.imagen360).trim();
+        if (!capaExt) {
+            capaExt = el("div"); capaExt.id = "visorExterno"; capaExt.style.cssText = "position:fixed;inset:0;z-index:4;background:#fff;display:grid;place-items:center";
+            const msg = el("div", "", "Cargando recorrido…"); msg.style.cssText = "color:#66736b;font:600 .95rem Montserrat,sans-serif";
+            const fr = el("iframe"); fr.title = "Recorrido"; fr.allowFullscreen = true; fr.setAttribute("allow", "fullscreen; accelerometer; gyroscope; autoplay; xr-spatial-tracking; web-share");
+            fr.style.cssText = "position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent";
+            const ab = el("a", "btn mini", "Abrir en pantalla completa ↗"); ab.id = "extAbrir"; ab.target = "_blank"; ab.rel = "noopener noreferrer";
+            ab.style.cssText = "position:fixed;right:16px;bottom:82px;z-index:6;opacity:.85";
+            capaExt.append(msg, fr); capaExt.__fr = fr; capaExt.__ab = ab; document.body.append(capaExt, ab);
+        }
+        if (extAbierta !== e.idEscena) capaExt.__fr.src = url;
+        capaExt.__ab.href = url; capaExt.style.display = "grid"; capaExt.__ab.style.display = "";
+        extAbierta = e.idEscena; $("brujulaUI").style.visibility = "hidden";
+        const h = $("eHint"); if (h) h.remove();
+        marcarEscena(e.idEscena);
+        if (!$("estadoCarga").classList.contains("error")) ocultarCarga();
+    }
+    function cerrarExterno() {
+        if (!capaExt || extAbierta === null) return;
+        capaExt.style.display = "none"; capaExt.__ab.style.display = "none"; capaExt.__fr.src = "about:blank";
+        extAbierta = null; $("brujulaUI").style.visibility = "";
     }
     v.on("load", ocultarCarga);
     v.on("load", ajustarVistaAerea);
@@ -182,9 +222,10 @@
 
     // Menú de escenas
     const botonesEscena = {};
-    if (p.escenas.length > 1) p.escenas.forEach(e => { const bt = el("button", "btn mini", e.nombreMenu || e.idEscena); bt.type = "button"; bt.onclick = () => v.loadScene(e.idEscena); botonesEscena[e.idEscena] = bt; $("menuEscenas").appendChild(bt); });
+    if (p.escenas.length > 1) p.escenas.forEach(e => { const bt = el("button", "btn mini", e.nombreMenu || e.idEscena); bt.type = "button"; bt.onclick = () => { if (extPorId[e.idEscena]) abrirExterno(e); else { cerrarExterno(); v.loadScene(e.idEscena); } }; botonesEscena[e.idEscena] = bt; $("menuEscenas").appendChild(bt); });
     const marcarEscena = id => Object.keys(botonesEscena).forEach(k => botonesEscena[k].classList.toggle("on", k === id));
     marcarEscena(primera); v.on("scenechange", marcarEscena);
+    { const extInicial = extPorId[p.escenaInicial] || (!escenasPan.length ? escenasExt[0] : null); if (extInicial) abrirExterno(extInicial); }
 
     // Mapa
     if (SI(p.mapaActivo) && num(p.mapaLat) !== undefined && num(p.mapaLng) !== undefined) {
