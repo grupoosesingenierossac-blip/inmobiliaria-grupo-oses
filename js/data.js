@@ -37,7 +37,7 @@ async function leerLibro(bust) {
             try {
                 const h = leerHojas(await bajarXlsx(url, ms));
                 if (!h.Proyectos || h.Proyectos.length < 3) throw new Error("el Excel en línea no tiene la hoja Proyectos");
-                window.FUENTE_DATOS = "Excel en línea"; return h;
+                window.FUENTE_DATOS = ""; return h;
             } catch (e) {
                 const m = (e && e.message) || String(e);
                 motivos.push(m === "Failed to fetch" ? "el navegador bloqueó la descarga (CORS o sin conexión)" : m);
